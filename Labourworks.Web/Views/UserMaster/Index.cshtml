@@ -1,0 +1,966 @@
+﻿@{
+    ViewData["Title"] = "User Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+
+<style>
+    .um-page {
+        padding: 25px;
+        min-height: calc(100vh - 80px);
+        background: #f5f7fb;
+        color: #172033;
+        border-radius: 12px;
+    }
+
+    .um-header, .um-card-header, .um-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .um-header {
+        margin-bottom: 22px;
+    }
+
+    .um-title {
+        margin: 0;
+        font-size: 25px;
+        font-weight: 750;
+    }
+
+    .um-subtitle {
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .um-card {
+        margin-bottom: 22px;
+        overflow: hidden;
+        border: 1px solid #e5eaf2;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .025);
+    }
+
+    .um-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .um-card-header h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+    .um-card-body {
+        padding: 22px;
+    }
+
+    .um-section-title {
+        margin: 6px 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #edf0f5;
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .um-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .um-required {
+        color: #dc2626;
+    }
+
+    .um-input {
+        display: block;
+        width: 100%;
+        min-height: 41px;
+        padding: 9px 11px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #1e293b;
+        font-size: 13px;
+    }
+
+        .um-input:focus {
+            border-color: #818cf8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+        }
+
+    .um-error {
+        margin-top: 5px;
+        color: #dc2626;
+        font-size: 12px;
+    }
+
+    .um-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 9px 14px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .um-btn-primary {
+        border-color: #4f46e5;
+        background: #4f46e5;
+        color: #fff;
+    }
+
+        .um-btn-primary:hover {
+            border-color: #4338ca;
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .um-btn:disabled {
+        opacity: .65;
+        cursor: not-allowed;
+    }
+
+    .um-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #userTable {
+        width: 100% !important;
+        font-size: 12px;
+    }
+
+        #userTable thead th {
+            padding: 13px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        #userTable tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+    .um-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .um-status-active {
+        background: #effaf2;
+        color: #16803d;
+    }
+
+    .um-status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .um-status-blocked {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .um-icon-btn {
+        width: 32px;
+        height: 32px;
+        margin-right: 4px;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #fff;
+    }
+
+    .um-edit {
+        color: #4f46e5;
+    }
+
+    .um-delete {
+        color: #dc2626;
+    }
+
+    .um-count {
+        color: #4f46e5;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .um-page .dataTables_wrapper {
+        padding: 16px 20px;
+    }
+
+    .um-page .dataTables_filter input,
+    .um-page .dataTables_length select {
+        padding: 7px;
+        border: 1px solid #dce3ed;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .um-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 41px;
+        font-size: 13px;
+    }
+
+    @@media(max-width: 767px) {
+        .um-page {
+            padding: 12px;
+        }
+
+        .um-card-body {
+            padding: 15px;
+        }
+
+        .um-card-header {
+            padding: 15px;
+        }
+
+        .um-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="container-fluid um-page">
+
+    @Html.AntiForgeryToken()
+
+    <div class="um-header">
+        <div>
+            <div class="text-secondary small mb-2">
+                Administration / Master Data / User Master
+            </div>
+            <h1 class="um-title">
+                <i class="bi bi-person-fill-gear text-primary me-2"></i>
+                User Master
+            </h1>
+            <div class="um-subtitle">
+                Register and manage system users.
+            </div>
+        </div>
+
+        <button type="button" id="addUserBtn"
+                class="um-btn um-btn-primary">
+            <i class="bi bi-plus-lg"></i> Add User
+        </button>
+    </div>
+
+    <!-- User Form -->
+    <div class="um-card" id="userFormCard" style="display:none;">
+        <div class="um-card-header">
+            <div>
+                <h5 id="formTitle">Add User</h5>
+                <div class="um-subtitle" id="formSubtitle">
+                    Enter user details below.
+                </div>
+            </div>
+            <span id="formMode" class="um-count">New Record</span>
+        </div>
+
+        <div class="um-card-body">
+            <form id="userForm" autocomplete="off">
+                <input type="hidden" id="UserMasterId" value="0" />
+
+                <div class="um-section-title">
+                    <i class="bi bi-person-vcard me-2"></i>
+                    Basic Information
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="um-label" for="UserID">
+                            User ID <span class="um-required">*</span>
+                        </label>
+                        <input id="UserID" class="um-input"
+                               maxlength="100" required />
+                    </div>
+
+                    <div class="col-md-4" id="passwordField">
+                        <label class="um-label" for="Password">
+                            Password <span class="um-required">*</span>
+                        </label>
+                        <input id="Password"
+                               type="password"
+                               class="um-input"
+                               minlength="12"
+                               maxlength="100"
+                               autocomplete="new-password"
+                               placeholder="Minimum 12 characters" />
+                    </div>
+
+                    <div class="col-md-4" id="confirmPasswordField">
+                        <label class="um-label" for="ConfirmPassword">
+                            Confirm Password <span class="um-required">*</span>
+                        </label>
+                        <input id="ConfirmPassword"
+                               type="password"
+                               class="um-input"
+                               minlength="12"
+                               maxlength="100"
+                               autocomplete="new-password"
+                               placeholder="Re-enter password" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="FullName">
+                            Full Name <span class="um-required">*</span>
+                        </label>
+                        <input id="FullName" class="um-input"
+                               maxlength="200" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="Email">
+                            Email <span class="um-required">*</span>
+                        </label>
+                        <input id="Email" type="email" class="um-input"
+                               maxlength="150" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="MobileNumber">
+                            Mobile Number
+                        </label>
+                        <input id="MobileNumber" type="tel"
+                               class="um-input" maxlength="15" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="RoleId">
+                            Role <span class="um-required">*</span>
+                        </label>
+                        <select id="RoleId" class="um-input" required>
+                            <option value="">-- Select Role --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="PlantId">
+                            Plant <span class="um-required">*</span>
+                        </label>
+                        <select id="PlantId" class="um-input" required>
+                            <option value="">-- Select Plant --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ContractorId">
+                            Contractor
+                        </label>
+                        <select id="ContractorId" class="um-input">
+                            <option value="">-- No Contractor --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="Status">
+                            Status <span class="um-required">*</span>
+                        </label>
+                        <select id="Status" class="um-input" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Blocked">Blocked</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label">Account Enabled</label>
+                        <label class="um-checkbox">
+                            <input type="checkbox" id="IsActive" checked />
+                            <span>User is active</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="formError" class="um-error mb-2"></div>
+
+                <div class="um-actions mt-4">
+                    <button type="button" id="cancelBtn" class="um-btn">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+
+                    <button type="submit" id="saveBtn"
+                            class="um-btn um-btn-primary">
+                        <i class="bi bi-check2-circle"></i> Save User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User List -->
+    <div class="um-card">
+        <div class="um-card-header">
+            <div>
+                <h5>
+                    <i class="bi bi-list-ul text-primary me-2"></i>
+                    Registered Users
+                </h5>
+                <div class="um-subtitle">
+                    View and manage registered users.
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <span id="listCount" class="um-count">0 Records</span>
+                <button type="button" id="refreshBtn" class="um-btn">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div id="tableMessage" class="px-3 pt-3 text-secondary small"></div>
+
+        <div class="um-table-wrap">
+            <table id="userTable" class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Role ID</th>
+                        <th>Plant ID</th>
+                        <th>Contractor ID</th>
+                        <th>Status</th>
+                        <th>Account</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(function () {
+            let users = [];
+            let dataTable = null;
+            let dropdownsLoaded = false;
+
+            function token() {
+                return $('input[name="__RequestVerificationToken"]').val();
+            }
+
+            function safe(value) {
+                return $('<div>').text(value == null ? '' : String(value)).html();
+            }
+
+            function showMessage(message, isError = false) {
+                if (window.Swal) {
+                    return Swal.fire({
+                        icon: isError ? 'error' : 'success',
+                        title: isError ? 'Error' : 'Success',
+                        text: message
+                    });
+                }
+
+                alert(message);
+                return Promise.resolve();
+            }
+
+            function apiError(xhr, fallback) {
+                return xhr.responseJSON?.message || fallback;
+            }
+
+            function fillDropdown(selector, items, placeholder, selectedValue) {
+                const dropdown = $(selector);
+                dropdown.empty();
+                dropdown.append(
+                    $('<option>').val('').text(placeholder)
+                );
+
+                (items || []).forEach(function (item) {
+                    dropdown.append(
+                        $('<option>').val(item.id).text(item.name)
+                    );
+                });
+
+                if (selectedValue != null) {
+                    dropdown.val(String(selectedValue));
+                }
+            }
+
+            function loadDropdowns(callback) {
+                $.ajax({
+                    url: '/UserMaster/GetDropdowns',
+                    type: 'GET',
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.status !== true) {
+                            showMessage(
+                                response?.message || 'Unable to load dropdowns.',
+                                true
+                            );
+                            return;
+                        }
+
+                        const data = response.data || {};
+
+                        fillDropdown(
+                            '#RoleId', data.roles,
+                            '-- Select Role --'
+                        );
+
+                        fillDropdown(
+                            '#PlantId', data.plants,
+                            '-- Select Plant --'
+                        );
+
+                        fillDropdown(
+                            '#ContractorId', data.contractors,
+                            '-- No Contractor --'
+                        );
+
+                        dropdownsLoaded = true;
+
+                        if (typeof callback === 'function') {
+                            callback();
+                        }
+                    },
+
+                    error: function (xhr) {
+                        showMessage(
+                            apiError(xhr, 'Unable to load dropdown data.'),
+                            true
+                        );
+                    }
+                });
+            }
+
+            function resetForm() {
+                $('#userForm')[0].reset();
+                $('#UserMasterId').val(0);
+                $('#Status').val('Active');
+                $('#IsActive').prop('checked', true);
+                $('#Password').val('');
+                $('#ConfirmPassword').val('');
+                $('#passwordField, #confirmPasswordField').show();
+                $('#Password, #ConfirmPassword').prop('required', true);
+                $('#formError').text('');
+
+                $('#formTitle').text('Add User');
+                $('#formSubtitle').text('Enter user details below.');
+                $('#formMode').text('New Record');
+
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Save User'
+                );
+
+                $('#userForm .um-input').removeClass('is-invalid');
+            }
+
+            function openForm() {
+                $('#userFormCard').stop(true, true).slideDown(200);
+
+                $('html, body').animate({
+                    scrollTop: $('#userFormCard').offset().top - 70
+                }, 200);
+            }
+
+            function closeForm() {
+                $('#userFormCard').stop(true, true).slideUp(200);
+                resetForm();
+            }
+
+            function renderTable(data) {
+                if ($.fn.DataTable.isDataTable('#userTable')) {
+                    $('#userTable').DataTable().destroy();
+                }
+
+                let rows = '';
+
+                data.forEach(function (item, index) {
+                    const status = String(item.status || '');
+                    const statusLower = status.toLowerCase();
+
+                    let statusClass = 'um-status-inactive';
+
+                    if (statusLower === 'active') {
+                        statusClass = 'um-status-active';
+                    } else if (statusLower === 'blocked') {
+                        statusClass = 'um-status-blocked';
+                    }
+
+                    rows += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${safe(item.userID)}</td>
+                            <td>${safe(item.fullName)}</td>
+                            <td>${safe(item.email)}</td>
+                            <td>${safe(item.mobileNumber || '-')}</td>
+                            <td>${safe(item.roleId)}</td>
+                            <td>${safe(item.plantId)}</td>
+                            <td>${safe(item.contractorId ?? '-')}</td>
+                            <td>
+                                <span class="um-status ${statusClass}">
+                                    ${safe(status)}
+                                </span>
+                            </td>
+                            <td>
+                                ${item.isActive
+                                    ? '<span class="um-status um-status-active">Enabled</span>'
+                                    : '<span class="um-status um-status-inactive">Disabled</span>'}
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="um-icon-btn um-edit editBtn"
+                                        data-id="${safe(item.userMasterId)}"
+                                        title="Edit user">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="um-icon-btn um-delete deleteBtn"
+                                        data-id="${safe(item.userMasterId)}"
+                                        title="Delete user">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+                });
+
+                $('#userTableBody').html(rows);
+
+                $('#listCount').text(
+                    data.length + (data.length === 1 ? ' Record' : ' Records')
+                );
+
+                dataTable = $('#userTable').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [5, 10, 25, 50],
+                    ordering: true,
+                    searching: true,
+                    autoWidth: false,
+                    order: [],
+                    columnDefs: [
+                        { targets: [0, 10], orderable: false }
+                    ],
+                    language: {
+                        emptyTable: 'No user records available',
+                        zeroRecords: 'No matching users found',
+                        search: '',
+                        searchPlaceholder: 'Search users...',
+                        lengthMenu: 'Show _MENU_ entries'
+                    }
+                });
+
+                dataTable.on('draw.dt', function () {
+                    const info = dataTable.page.info();
+
+                    dataTable.column(0, { page: 'current' })
+                        .nodes().each(function (cell, index) {
+                            cell.textContent = info.start + index + 1;
+                        });
+                });
+            }
+
+            function loadUsers() {
+                $('#refreshBtn').prop('disabled', true);
+                $('#tableMessage').text('Loading users...');
+
+                $.ajax({
+                    url: '/UserMaster/GetAll',
+                    type: 'GET',
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.status !== true) {
+                            users = [];
+                            renderTable([]);
+                            $('#tableMessage').text(
+                                response?.message || 'Unable to load users.'
+                            );
+                            return;
+                        }
+
+                        users = response.data || [];
+                        renderTable(users);
+                        $('#tableMessage').text('');
+                    },
+
+                    error: function (xhr) {
+                        users = [];
+                        renderTable([]);
+                        $('#tableMessage').text(
+                            apiError(xhr, 'Unable to load users.')
+                        );
+                    },
+
+                    complete: function () {
+                        $('#refreshBtn').prop('disabled', false);
+                    }
+                });
+            }
+
+            function fillForm(item) {
+                $('#UserMasterId').val(item.userMasterId);
+                $('#UserID').val(item.userID || '');
+                $('#FullName').val(item.fullName || '');
+                $('#Email').val(item.email || '');
+                $('#MobileNumber').val(item.mobileNumber || '');
+                $('#RoleId').val(String(item.roleId));
+                $('#PlantId').val(String(item.plantId));
+                $('#ContractorId').val(
+                    item.contractorId == null ? '' : String(item.contractorId)
+                );
+                $('#Status').val(item.status || 'Active');
+                $('#IsActive').prop('checked', !!item.isActive);
+                $('#Password').val('');
+                $('#ConfirmPassword').val('');
+                $('#passwordField, #confirmPasswordField').hide();
+                $('#Password, #ConfirmPassword').prop('required', false);
+
+                $('#formTitle').text('Edit User');
+                $('#formSubtitle').text('Update the selected user.');
+                $('#formMode').text('Edit Record');
+
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Update User'
+                );
+
+                $('#formError').text('');
+                openForm();
+            }
+
+            function getDto() {
+                const contractorValue = $('#ContractorId').val();
+
+                return {
+                    userMasterId: Number($('#UserMasterId').val()) || 0,
+                    userID: $('#UserID').val().trim(),
+                    password: $('#Password').val(),
+                    fullName: $('#FullName').val().trim(),
+                    email: $('#Email').val().trim(),
+                    mobileNumber: $('#MobileNumber').val().trim() || null,
+                    roleId: Number($('#RoleId').val()) || 0,
+                    plantId: Number($('#PlantId').val()) || 0,
+                    contractorId: contractorValue
+                        ? Number(contractorValue)
+                        : null,
+                    status: $('#Status').val(),
+                    isActive: $('#IsActive').is(':checked')
+                };
+            }
+
+            $('#addUserBtn').on('click', function () {
+                resetForm();
+
+                if (!dropdownsLoaded) {
+                    loadDropdowns(openForm);
+                } else {
+                    openForm();
+                }
+
+                $('#UserID').trigger('focus');
+            });
+
+            $('#cancelBtn').on('click', closeForm);
+            $('#refreshBtn').on('click', loadUsers);
+
+            $('#userForm').on('submit', function (e) {
+                e.preventDefault();
+
+                if (!this.reportValidity()) {
+                    return;
+                }
+
+                const dto = getDto();
+                const isEdit = dto.userMasterId > 0;
+
+                if (!isEdit) {
+                    if (!dto.password || dto.password.length < 12) {
+                        $('#formError').text(
+                            'Password must be at least 12 characters long.'
+                        );
+                        return;
+                    }
+
+                    if (dto.password !== $('#ConfirmPassword').val()) {
+                        $('#formError').text('Passwords do not match.');
+                        return;
+                    }
+                }
+
+                if (dto.roleId <= 0) {
+                    $('#formError').text('Please select a role.');
+                    return;
+                }
+
+                if (dto.plantId <= 0) {
+                    $('#formError').text('Please select a plant.');
+                    return;
+                }
+
+                const url = isEdit
+                    ? '/UserMaster/Update'
+                    : '/UserMaster/Create';
+
+                $('#formError').text('');
+                $('#saveBtn').prop('disabled', true);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(dto),
+                    headers: {
+                        'RequestVerificationToken': token()
+                    },
+
+                    success: function (response) {
+                        if (response && response.status === true) {
+                            showMessage(response.message).then(function () {
+                                closeForm();
+                                loadUsers();
+                            });
+                        } else {
+                            $('#formError').text(
+                                response?.message || 'Unable to save user.'
+                            );
+                        }
+                    },
+
+                    error: function (xhr) {
+                        const message = apiError(
+                            xhr, 'An error occurred while saving the user.'
+                        );
+
+                        $('#formError').text(message);
+                    },
+
+                    complete: function () {
+                        $('#saveBtn').prop('disabled', false);
+                    }
+                });
+            });
+
+            $('#userTable').on('click', '.editBtn', function () {
+                const id = Number($(this).attr('data-id'));
+
+                const item = users.find(
+                    x => Number(x.userMasterId) === id
+                );
+
+                if (!item) {
+                    showMessage('User record not found.', true);
+                    return;
+                }
+
+                if (!dropdownsLoaded) {
+                    loadDropdowns(function () {
+                        fillForm(item);
+                    });
+                } else {
+                    fillForm(item);
+                }
+            });
+
+            $('#userTable').on('click', '.deleteBtn', function () {
+                const id = Number($(this).attr('data-id'));
+
+                const item = users.find(
+                    x => Number(x.userMasterId) === id
+                );
+
+                if (!item) {
+                    showMessage('User record not found.', true);
+                    return;
+                }
+
+                function deleteUser() {
+                    $.ajax({
+                        url: '/UserMaster/Delete?id=' +
+                            encodeURIComponent(id),
+                        type: 'POST',
+                        headers: {
+                            'RequestVerificationToken': token()
+                        },
+
+                        success: function (response) {
+                            if (response && response.status === true) {
+                                showMessage(response.message)
+                                    .then(loadUsers);
+                            } else {
+                                showMessage(
+                                    response?.message ||
+                                    'Unable to delete user.',
+                                    true
+                                );
+                            }
+                        },
+
+                        error: function (xhr) {
+                            showMessage(
+                                apiError(
+                                    xhr,
+                                    'An error occurred while deleting the user.'
+                                ),
+                                true
+                            );
+                        }
+                    });
+                }
+
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Delete User?',
+                        text: 'Are you sure you want to delete ' +
+                            item.fullName + '?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete',
+                        confirmButtonColor: '#dc3545'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            deleteUser();
+                        }
+                    });
+                } else if (confirm(
+                    'Are you sure you want to delete ' +
+                    item.fullName + '?'
+                )) {
+                    deleteUser();
+                }
+            });
+
+            loadDropdowns();
+            loadUsers();
+        });
+    </script>
+}

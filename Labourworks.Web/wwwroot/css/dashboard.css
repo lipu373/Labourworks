@@ -1,0 +1,132 @@
+﻿body {
+    margin: 0;
+    background: #eef2f7;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg,#071a33,#0b2344);
+    color: #fff;
+    padding: 20px;
+}
+
+.logo-section h4 {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.logo-section small {
+    color: #9fb3d1;
+    font-size: 11px;
+}
+
+.sidebar .nav-link {
+    color: #cbd5e1;
+    border-radius: 12px;
+    margin-bottom: 6px;
+    padding: 12px 14px;
+}
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+        background: #2563eb;
+        color: #fff;
+    }
+
+.main-content {
+    margin-left: 260px;
+}
+
+.top-navbar {
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 1000;
+}
+
+.page-content {
+    margin-top: 70px;
+    padding: 30px;
+}
+
+.dashboard-header h2 {
+    font-weight: 700;
+}
+
+.stat-card {
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.08);
+}
+
+    .stat-card h3 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 12px 0 6px;
+    }
+
+.chart-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.06);
+}
+
+.chart-placeholder {
+    height: 280px;
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    background: #f8fafc;
+}
+
+.factory-panel img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.08);
+}
+
+.table thead th {
+    border-bottom: 1px solid #e5e7eb;
+    color: #475569;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 14px 0;
+}
+
+
+@media (max-width: 991px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .top-navbar {
+        left: 0;
+    }
+}

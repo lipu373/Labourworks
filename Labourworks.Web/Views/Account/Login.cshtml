@@ -1,0 +1,645 @@
+﻿@{
+    ViewData["Title"] = "Sign In";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLMS | Sign In</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <style>
+        :root {
+            --navy: #0b2e67;
+            --blue: #1765ed;
+            --orange: #ff831c;
+            --muted: #7183a5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            color: var(--navy);
+            background: #edf3ff;
+        }
+
+        .login-shell {
+            display: grid;
+            grid-template-columns: 58.35% 41.65%;
+            min-height: 100vh;
+        }
+
+        /* Left branding panel */
+        .brand-panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 55px 7.7% 40px;
+            overflow: hidden;
+            color: white;
+            background: linear-gradient(115deg, rgba(5, 35, 79, .50), rgba(8, 47, 93, .12) 55%, rgba(4, 27, 57, .28)), url('/images/login-bg.jpg') center / cover no-repeat, linear-gradient(135deg, #1d568c, #102b54);
+        }
+
+        .brand-top {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .clms-mark {
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 6px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+
+            .clms-mark span {
+                display: block;
+                width: 13px;
+                border-radius: 8px;
+                background: #fff;
+            }
+
+                .clms-mark span:nth-child(1),
+                .clms-mark span:nth-child(3) {
+                    height: 30px;
+                }
+
+                .clms-mark span:nth-child(2) {
+                    height: 42px;
+                    background: var(--orange);
+                    position: relative;
+                }
+
+                    .clms-mark span:nth-child(2)::before {
+                        content: "";
+                        position: absolute;
+                        width: 16px;
+                        height: 16px;
+                        top: -12px;
+                        left: -1.5px;
+                        border-radius: 50%;
+                        background: var(--orange);
+                    }
+
+        .brand-name {
+            color: var(--orange);
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .brand-caption {
+            margin-top: 5px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            margin: 45px 0 auto;
+            padding-top: 35px;
+            padding-bottom: 50px;
+        }
+
+            .hero-copy h1 {
+                margin: 0;
+                font-size: clamp(36px, 4.1vw, 58px);
+                font-weight: 800;
+                letter-spacing: -2px;
+                line-height: 1.12;
+            }
+
+                .hero-copy h1 span {
+                    color: var(--orange);
+                }
+
+        .feature-panel {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            padding: 27px 15px;
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 24px;
+            background: rgba(13, 33, 75, .80);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .15);
+            backdrop-filter: blur(12px);
+        }
+
+        .feature-item {
+            padding: 0 13px;
+            border-right: 1px solid rgba(255, 255, 255, .14);
+        }
+
+            .feature-item:last-child {
+                border-right: none;
+            }
+
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 14px;
+            border: 1px solid #3978d9;
+            border-radius: 13px;
+            background: rgba(20, 83, 177, .50);
+            color: white;
+            font-size: 23px;
+        }
+
+        .feature-item:last-child .feature-icon {
+            color: var(--orange);
+            border-color: #b66a0b;
+            background: rgba(126, 72, 6, .25);
+        }
+
+        .feature-item p {
+            margin: 0;
+            color: #e5edff;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* Right login panel */
+        .login-panel {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 35px;
+            overflow: hidden;
+            background: linear-gradient(135deg, transparent 70%, rgba(204, 220, 248, .65) 70%), #f2f6ff;
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 515px;
+            padding: 46px 44px 40px;
+            border-radius: 25px;
+            background: #fff;
+            box-shadow: 0 18px 50px rgba(27, 65, 127, .12);
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+            .login-brand .clms-mark {
+                height: 40px;
+                gap: 5px;
+            }
+
+                .login-brand .clms-mark span {
+                    width: 10px;
+                    background: #1754c5;
+                }
+
+                    .login-brand .clms-mark span:nth-child(2) {
+                        height: 32px;
+                        background: var(--orange);
+                    }
+
+                        .login-brand .clms-mark span:nth-child(2)::before {
+                            width: 13px;
+                            height: 13px;
+                            top: -10px;
+                            left: -1.5px;
+                        }
+
+                    .login-brand .clms-mark span:nth-child(1),
+                    .login-brand .clms-mark span:nth-child(3) {
+                        height: 23px;
+                    }
+
+            .login-brand .brand-name {
+                margin-top: 5px;
+                font-size: 30px;
+            }
+
+            .login-brand .brand-caption {
+                color: var(--navy);
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+        .welcome-title {
+            margin: 0 0 8px;
+            color: #0c2e68;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .welcome-subtitle {
+            margin: 0 0 26px;
+            color: #6f82a4;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .field {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .field-icon {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            color: #234c8c;
+            font-size: 17px;
+        }
+
+        .field input {
+            width: 100%;
+            height: 58px;
+            padding: 0 48px 0 54px;
+            border: 1px solid #d4e0f4;
+            border-radius: 13px;
+            outline: none;
+            color: #17366b;
+            background: #fbfdff;
+            font: inherit;
+            font-size: 14px;
+            transition: .2s ease;
+        }
+
+            .field input::placeholder {
+                color: #8192b1;
+            }
+
+            .field input:focus {
+                border-color: #4a88f6;
+                box-shadow: 0 0 0 4px rgba(23, 101, 237, .08);
+            }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 17px;
+            transform: translateY(-50%);
+            border: none;
+            padding: 5px;
+            color: #254d88;
+            background: transparent;
+            cursor: pointer;
+            font-size: 19px;
+        }
+
+        .login-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 17px 0 25px;
+            font-size: 13px;
+        }
+
+        .remember-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #315184;
+            cursor: pointer;
+        }
+
+            .remember-option input {
+                width: 19px;
+                height: 19px;
+                margin: 0;
+                accent-color: #1765ed;
+            }
+
+        .forgot-link {
+            color: #0759df;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            .forgot-link:hover {
+                text-decoration: underline;
+            }
+
+        .sign-in-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 58px;
+            border: none;
+            border-radius: 13px;
+            color: white;
+            background: linear-gradient(100deg, #2478fa, #0756df);
+            box-shadow: 0 10px 23px rgba(21, 95, 231, .24);
+            font: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+            .sign-in-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 13px 26px rgba(21, 95, 231, .30);
+            }
+
+            .sign-in-btn:disabled {
+                opacity: .7;
+                cursor: wait;
+                transform: none;
+            }
+
+        .login-error {
+            margin: 0 0 15px;
+            color: #dc2626;
+            font-size: 12px;
+        }
+
+        .login-footer {
+            margin-top: 29px;
+            color: #7183a5;
+            text-align: center;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        @@media (max-width: 1100px) {
+            .login-shell {
+                grid-template-columns: 50% 50%;
+            }
+
+            .brand-panel {
+                padding: 40px 6%;
+            }
+
+            .feature-panel {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px 0;
+            }
+
+            .feature-item:nth-child(2) {
+                border-right: none;
+            }
+
+            .login-panel {
+                padding: 25px;
+            }
+
+            .login-card {
+                padding: 38px 30px;
+            }
+        }
+
+        @@media (max-width: 760px) {
+            .login-shell {
+                display: block;
+            }
+
+            .brand-panel {
+                display: none;
+            }
+
+            .login-panel {
+                min-height: 100vh;
+                padding: 22px;
+            }
+
+            .login-card {
+                max-width: 500px;
+                padding: 35px 25px;
+                border-radius: 20px;
+            }
+
+            .welcome-title {
+                font-size: 28px;
+            }
+        }
+
+        @@media (max-width: 380px) {
+            .login-card {
+                padding: 30px 18px;
+            }
+
+            .login-options {
+                align-items: flex-start;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="login-shell">
+
+        <!-- Left: Branding -->
+        <section class="brand-panel">
+            <div class="brand-top">
+                <div class="brand-logo">
+                    <div class="clms-mark" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div>
+                        <div class="brand-name">CLMS</div>
+                        <div class="brand-caption">
+                            Contract Labour Management System
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-copy">
+                <h1>
+                    Smarter Workforce<br />
+                    Management for a<br />
+                    <span>Safer Tomorrow</span>
+                </h1>
+            </div>
+
+            <div class="feature-panel">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-person-lines-fill"></i>
+                    </div>
+                    <p>Contractor &amp; Worker Onboarding / KYC</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-fingerprint"></i>
+                    </div>
+                    <p>Secure biometric attendance &amp; shift tracking.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <p>PF / ESIC &amp; Statutory Compliance</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                    <p>Real-Time Non-Compliance Alerts</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: Login form -->
+        <section class="login-panel">
+            <div class="login-card">
+
+                <div class="login-brand">
+                    <div class="clms-mark" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="brand-name">CLMS</div>
+                    <div class="brand-caption">
+                        Contract Labour Management System
+                    </div>
+                </div>
+
+                <h1 class="welcome-title">Welcome Back</h1>
+                <p class="welcome-subtitle">
+                    Sign in to manage your contract labour workforce
+                </p>
+
+                <form id="loginForm"
+                      asp-controller="Account"
+                      asp-action="Login"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="field">
+                        <i class="bi bi-person field-icon"></i>
+                        <input type="text"
+                               id="UserID"
+                               name="UserID"
+                               placeholder="Username / Email"
+                               autocomplete="username"
+                               maxlength="150"
+                               required />
+                    </div>
+
+                    <div class="field">
+                        <i class="bi bi-lock field-icon"></i>
+                        <input type="password"
+                               id="Password"
+                               name="Password"
+                               placeholder="Password"
+                               autocomplete="current-password"
+                               required />
+
+                        <button type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember-option">
+                            <input type="checkbox" name="RememberMe" value="true" checked />
+                            <span>Remember Me</span>
+                        </label>
+
+                        <a href="#" class="forgot-link"
+                           id="forgotPasswordLink">Forgot Password?</a>
+                    </div>
+
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="login-error" role="alert">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+
+                    <button type="submit" class="sign-in-btn" id="signInBtn">
+                        <span>Sign In</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    © @DateTime.Now.Year Addsoft Technologies Limited.
+                    All Rights Reserved.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const password = document.getElementById('Password');
+            const toggle = document.getElementById('togglePassword');
+            const form = document.getElementById('loginForm');
+            const signInBtn = document.getElementById('signInBtn');
+            const forgotLink = document.getElementById('forgotPasswordLink');
+
+            toggle.addEventListener('click', function () {
+                const isHidden = password.type === 'password';
+                password.type = isHidden ? 'text' : 'password';
+
+                toggle.innerHTML = isHidden
+                    ? '<i class="bi bi-eye-slash"></i>'
+                    : '<i class="bi bi-eye"></i>';
+
+                toggle.setAttribute(
+                    'aria-label',
+                    isHidden ? 'Hide password' : 'Show password'
+                );
+            });
+
+            form.addEventListener('submit', function () {
+                if (form.checkValidity()) {
+                    signInBtn.disabled = true;
+                    signInBtn.querySelector('span').textContent = 'Signing In...';
+                }
+            });
+
+            forgotLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                alert('Please contact your system administrator to reset your password.');
+            });
+        });
+    </script>
+</body>
+</html>

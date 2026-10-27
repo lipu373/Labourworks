@@ -1,0 +1,842 @@
+﻿/* =========================================================
+   MANAGEMENT DASHBOARD
+   Modern Colorful MES Dashboard
+========================================================= */
+
+.management-dashboard {
+    padding: 18px 20px 35px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef5ff 0%, #f8faff 48%, #eefbf7 100%);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 105px;
+    padding: 22px 28px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 45%, #6a1b9a 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(13, 71, 161, 0.22);
+}
+
+
+    /* Decorative circles */
+
+    .dashboard-header::before {
+        content: "";
+        position: absolute;
+        width: 190px;
+        height: 190px;
+        right: 80px;
+        top: -115px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+
+    .dashboard-header::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        right: -35px;
+        bottom: -70px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+
+    .dashboard-header h2 {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff;
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: .2px;
+    }
+
+
+        .dashboard-header h2 i {
+            font-size: 27px;
+        }
+
+
+    .dashboard-header p {
+        position: relative;
+        z-index: 2;
+        margin: 6px 0 0;
+        color: rgba(255,255,255,.82);
+        font-size: 13px;
+    }
+
+
+/* =========================================================
+   FILTER CARD
+========================================================= */
+
+.filter-card {
+    position: relative;
+    margin-bottom: 20px;
+    border: none !important;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 6px 22px rgba(0,0,0,.07);
+    overflow: hidden;
+}
+
+
+    .filter-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #1565c0, #7b1fa2, #00acc1);
+    }
+
+
+    .filter-card .card-body {
+        padding: 20px 22px;
+    }
+
+
+.form-label {
+    margin-bottom: 6px;
+    color: #263238;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.form-control {
+    height: 40px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    color: #263238;
+    background: #ffffff;
+    font-size: 13px;
+    transition: all .2s ease;
+}
+
+
+    .form-control:hover {
+        border-color: #90caf9;
+    }
+
+
+    .form-control:focus {
+        border-color: #1976d2;
+        box-shadow: 0 0 0 3px rgba(25,118,210,.10);
+    }
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.filter-buttons {
+    display: flex;
+    gap: 9px;
+}
+
+
+    .filter-buttons .btn {
+        height: 38px;
+        padding: 0 18px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+
+    .filter-buttons .btn-primary {
+        border: none;
+        background: linear-gradient(135deg, #1565c0, #1976d2);
+        box-shadow: 0 4px 10px rgba(21,101,192,.20);
+    }
+
+
+        .filter-buttons .btn-primary:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+        }
+
+
+    .filter-buttons .btn-secondary {
+        border: none;
+        background: #64748b;
+        color: #ffffff;
+    }
+
+
+        .filter-buttons .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-1px);
+        }
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 22px 0 10px;
+    color: #174ea6;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+
+    .section-title i {
+        display: inline-flex;
+        width: 25px;
+        height: 25px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        background: #e8f0fe;
+        color: #1565c0;
+        font-size: 13px;
+    }
+
+
+/* =========================================================
+   KPI CARD - COMMON
+========================================================= */
+
+.kpi-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 96px;
+    padding: 16px 17px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: none !important;
+    border-radius: 12px;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(0,0,0,.12);
+    transition: transform .22s ease, box-shadow .22s ease;
+}
+
+
+    .kpi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 25px rgba(0,0,0,.17);
+    }
+
+
+    /* Decorative circle */
+
+    .kpi-card::before {
+        content: "";
+        position: absolute;
+        width: 110px;
+        height: 110px;
+        right: -35px;
+        top: -45px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.12);
+    }
+
+
+    .kpi-card::after {
+        content: "";
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        right: 65px;
+        bottom: -45px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.07);
+    }
+
+
+/* =========================================================
+   KPI COLORS - PRODUCTION
+========================================================= */
+
+/* Total Work Orders */
+
+.row.g-3 > div:nth-child(1) .kpi-card {
+    background: linear-gradient(135deg, #1976d2, #2196f3);
+}
+
+
+/* Ordered Quantity */
+
+.row.g-3 > div:nth-child(2) .kpi-card {
+    background: linear-gradient(135deg, #00897b, #00bfa5);
+}
+
+
+/* Produced Quantity */
+
+.row.g-3 > div:nth-child(3) .kpi-card {
+    background: linear-gradient(135deg, #7b1fa2, #ab47bc);
+}
+
+
+/* Pending Quantity */
+
+.row.g-3 > div:nth-child(4) .kpi-card {
+    background: linear-gradient(135deg, #f57c00, #ff9800);
+}
+
+
+/* =========================================================
+   KPI COLORS
+   LCM & QUALITY
+========================================================= */
+
+/* LCM Bonded */
+
+.management-dashboard > .row:nth-of-type(3) > div:nth-child(1) .kpi-card {
+    background: linear-gradient(135deg, #1565c0, #42a5f5);
+}
+
+
+/* LCM Tested */
+
+.management-dashboard > .row:nth-of-type(3) > div:nth-child(2) .kpi-card {
+    background: linear-gradient(135deg, #00838f, #00acc1);
+}
+
+
+/* Pass */
+
+.pass-card {
+    background: linear-gradient(135deg, #00a152, #20c779) !important;
+    color: #ffffff !important;
+}
+
+
+/* Fail */
+
+.fail-card {
+    background: linear-gradient(135deg, #e53935, #ff5252) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   REPAIR & DISPATCH
+========================================================= */
+
+.management-dashboard > .row:nth-of-type(4) > div:nth-child(1) .kpi-card {
+    background: linear-gradient(135deg, #8e24aa, #ba68c8);
+}
+
+
+.management-dashboard > .row:nth-of-type(4) > div:nth-child(2) .kpi-card {
+    background: linear-gradient(135deg, #2e7d32, #43a047);
+}
+
+
+.management-dashboard > .row:nth-of-type(4) > div:nth-child(3) .kpi-card {
+    background: linear-gradient(135deg, #1565c0, #1e88e5);
+}
+
+
+.management-dashboard > .row:nth-of-type(4) > div:nth-child(4) .kpi-card {
+    background: linear-gradient(135deg, #00838f, #00acc1);
+}
+
+
+/* =========================================================
+   KPI ICON
+========================================================= */
+
+.kpi-icon {
+    position: relative;
+    z-index: 3;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: rgba(255,255,255,.20);
+    border: 1px solid rgba(255,255,255,.35);
+    color: #ffffff;
+    font-size: 21px;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.20);
+}
+
+
+.kpi-card > div:last-child {
+    position: relative;
+    z-index: 3;
+}
+
+
+.kpi-card span {
+    display: block;
+    margin-bottom: 3px;
+    color: rgba(255,255,255,.88);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.kpi-card h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+
+/* =========================================================
+   PERFORMANCE
+========================================================= */
+
+.percentage-card {
+    position: relative;
+    overflow: hidden;
+    padding: 17px 19px;
+    min-height: 105px;
+    border: none;
+    border-radius: 13px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgba(0,0,0,.07);
+    transition: .2s;
+}
+
+
+    .percentage-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 22px rgba(0,0,0,.11);
+    }
+
+
+    .percentage-card span {
+        display: block;
+        margin-bottom: 5px;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    .percentage-card strong {
+        display: block;
+        margin-bottom: 10px;
+        color: #172554;
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+
+    /* Performance cards different top border */
+
+    .percentage-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #1976d2, #42a5f5);
+    }
+
+
+    .percentage-card:nth-child(2)::before {
+        background: linear-gradient(90deg, #16a34a, #4ade80);
+    }
+
+
+    .percentage-card:nth-child(3)::before {
+        background: linear-gradient(90deg, #ef4444, #fb7185);
+    }
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.progress {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #e9eef5;
+}
+
+
+.progress-bar {
+    border-radius: 20px;
+    transition: width .6s ease;
+}
+
+
+/* Production */
+
+#ProductionProgress {
+    background: linear-gradient(90deg, #1565c0, #42a5f5);
+}
+
+
+/* Yield */
+
+#YieldProgress {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+
+/* Rejection */
+
+#RejectionProgress {
+    background: linear-gradient(90deg, #ef4444, #fb7185);
+}
+
+
+/* =========================================================
+   TODAY ACTIVITY
+========================================================= */
+
+.today-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 100px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: none;
+    border-radius: 13px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgba(0,0,0,.07);
+    transition: .2s;
+}
+
+
+    .today-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    }
+
+
+    .today-card span {
+        display: block;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    .today-card h2 {
+        margin: 3px 0 0;
+        color: #1565c0;
+        font-size: 29px;
+        font-weight: 800;
+    }
+
+
+    .today-card:nth-child(2) h2 {
+        color: #00897b;
+    }
+
+
+.today-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 22px;
+    background: linear-gradient(135deg, #1565c0, #42a5f5);
+    box-shadow: 0 5px 12px rgba(21,101,192,.22);
+}
+
+
+/* =========================================================
+   CHART CARD
+========================================================= */
+
+.chart-card {
+    position: relative;
+    min-height: 340px;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(0,0,0,.07);
+    transition: .2s;
+}
+
+
+    .chart-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.10);
+    }
+
+
+    .chart-card h5 {
+        margin: 0 0 5px;
+        color: #174ea6;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+
+        .chart-card h5::after {
+            content: "";
+            display: block;
+            width: 35px;
+            height: 3px;
+            margin-top: 7px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #1976d2, #7b1fa2);
+        }
+
+
+    .chart-card canvas {
+        width: 100% !important;
+        max-height: 275px;
+        margin-top: 8px;
+    }
+
+
+    /* =========================================================
+   CHART DIFFERENT TOP COLORS
+========================================================= */
+
+    .chart-card:nth-child(1) {
+        border-top: 4px solid #1976d2;
+    }
+
+
+    .chart-card:nth-child(2) {
+        border-top: 4px solid #00a152;
+    }
+
+
+    .chart-card:nth-child(3) {
+        border-top: 4px solid #8e24aa;
+    }
+
+
+    .chart-card:nth-child(4) {
+        border-top: 4px solid #00acc1;
+    }
+
+
+/* =========================================================
+   GENERAL CARD EFFECT
+========================================================= */
+
+.card,
+.kpi-card,
+.percentage-card,
+.today-card,
+.chart-card {
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.management-dashboard::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.management-dashboard::-webkit-scrollbar-track {
+    background: #edf2f7;
+}
+
+
+.management-dashboard::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient( #1976d2, #7b1fa2 );
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .management-dashboard {
+        padding: 14px;
+    }
+
+    .dashboard-header {
+        padding: 18px;
+    }
+
+        .dashboard-header h2 {
+            font-size: 21px;
+        }
+}
+
+
+@media (max-width: 768px) {
+
+    .management-dashboard {
+        padding: 10px;
+    }
+
+    .dashboard-header {
+        min-height: 90px;
+        padding: 17px;
+        border-radius: 12px;
+    }
+
+        .dashboard-header h2 {
+            font-size: 19px;
+        }
+
+        .dashboard-header p {
+            font-size: 11px;
+        }
+
+    .filter-card .card-body {
+        padding: 15px;
+    }
+
+    .section-title {
+        margin-top: 18px;
+    }
+
+    .kpi-card {
+        min-height: 90px;
+        padding: 14px;
+    }
+
+    .kpi-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 19px;
+    }
+
+    .kpi-card h3 {
+        font-size: 23px;
+    }
+
+    .percentage-card {
+        min-height: 100px;
+    }
+
+    .chart-card {
+        min-height: 320px;
+    }
+
+
+    /* PRODUCTION */
+
+    .production-row > div:nth-child(1) .kpi-card {
+        background: linear-gradient(135deg, #1976d2, #2196f3);
+    }
+
+    .production-row > div:nth-child(2) .kpi-card {
+        background: linear-gradient(135deg, #00897b, #00bfa5);
+    }
+
+    .production-row > div:nth-child(3) .kpi-card {
+        background: linear-gradient(135deg, #7b1fa2, #ab47bc);
+    }
+
+    .production-row > div:nth-child(4) .kpi-card {
+        background: linear-gradient(135deg, #f57c00, #ff9800);
+    }
+
+
+    /* QUALITY */
+
+    .quality-row > div:nth-child(1) .kpi-card {
+        background: linear-gradient(135deg, #1565c0, #42a5f5);
+    }
+
+    .quality-row > div:nth-child(2) .kpi-card {
+        background: linear-gradient(135deg, #00838f, #00acc1);
+    }
+
+    .quality-row > div:nth-child(3) .kpi-card {
+        background: linear-gradient(135deg, #00a152, #20c779);
+    }
+
+    .quality-row > div:nth-child(4) .kpi-card {
+        background: linear-gradient(135deg, #e53935, #ff5252);
+    }
+
+
+    /* REPAIR & DISPATCH */
+
+    .repair-row > div:nth-child(1) .kpi-card {
+        background: linear-gradient(135deg, #8e24aa, #ba68c8);
+    }
+
+    .repair-row > div:nth-child(2) .kpi-card {
+        background: linear-gradient(135deg, #2e7d32, #43a047);
+    }
+
+    .repair-row > div:nth-child(3) .kpi-card {
+        background: linear-gradient(135deg, #1565c0, #1e88e5);
+    }
+
+    .repair-row > div:nth-child(4) .kpi-card {
+        background: linear-gradient(135deg, #00838f, #00acc1);
+    }
+
+
+
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .filter-buttons {
+        width: 100%;
+    }
+
+        .filter-buttons .btn {
+            flex: 1;
+        }
+
+    .dashboard-header h2 {
+        font-size: 17px;
+    }
+
+    .dashboard-header p {
+        font-size: 10px;
+    }
+}
+
+

@@ -1,0 +1,156 @@
+﻿@model Labourworks.Domain.Entities.PlantMaster
+
+@{
+    ViewData["Title"] = "Edit Plant";
+}
+
+<div class="card">
+
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-pencil-square"></i>
+            Edit Plant
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="PlantId" value="@Model.PlantId" />
+
+  
+
+        <div class="mb-3">
+            <label>Plant Name</label>
+            <input type="text"
+                   id="PlantName"
+                   class="form-control"
+                   value="@Model.PlantName" />
+            <span id="PlantNameError" class="text-danger"></span>
+        </div>
+
+
+
+
+
+
+
+        <div class="form-check mb-3">
+
+            <input type="checkbox"
+                   id="IsActive"
+                   class="form-check-input"
+                   @(Model.IsActive ? "checked" : "") />
+
+            <label class="form-check-label">
+                Active
+            </label>
+
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+
+        <button type="button"
+                id="btnUpdate"
+                class="btn btn-primary">
+
+            <i class="bi bi-pencil-square"></i>
+            Update
+
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+
+            Cancel
+
+        </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $("#btnUpdate").click(function () {
+
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                var plant = {
+
+                    PlantId: $("#PlantId").val(),
+
+
+
+                    PlantName: $("#PlantName").val(),
+
+
+                    IsActive: $("#IsActive").is(":checked")
+
+                };
+
+             
+
+                if (plant.PlantName == "") {
+
+                    $("#PlantNameError").text("Plant Name is required.");
+                    return;
+
+                }
+
+            
+
+                $.ajax({
+
+                    url: "/PlantMaster/Update",
+
+                    type: "POST",
+
+                    contentType: "application/json",
+
+                    headers: {
+                        RequestVerificationToken: token
+                    },
+
+                    data: JSON.stringify(plant),
+
+                    success: function (response) {
+
+                        if (response.status) {
+
+                            alert(response.message);
+
+                            window.location.href = "/PlantMaster/Index";
+
+                        }
+                        else {
+
+                            alert(response.message);
+
+                        }
+
+                    },
+
+                    error: function () {
+
+                        alert("Something went wrong.");
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}

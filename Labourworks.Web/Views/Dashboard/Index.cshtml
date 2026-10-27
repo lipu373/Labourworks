@@ -1,0 +1,770 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --dash-navy: #111d35;
+        --dash-blue: #2463eb;
+        --dash-bg: #f3f6fb;
+        --dash-text: #1e293b;
+        --dash-muted: #64748b;
+        --dash-border: #e7edf5;
+    }
+
+    .dashboard-page {
+        background: var(--dash-bg);
+        color: var(--dash-text);
+        min-height: calc(100vh - 70px);
+        padding: 18px;
+        border-radius: 12px;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    .dash-topline, .dash-heading, .dash-card-heading, .dash-action, .dash-pipeline,
+    .dash-activity, .dash-alert, .dash-billing-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .dash-topline {
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .dash-breadcrumb {
+        color: var(--dash-muted);
+        font-size: 12px;
+    }
+
+    .dash-search {
+        width: min(300px, 100%);
+        border: 1px solid var(--dash-border);
+        border-radius: 9px;
+        background: #fff;
+        padding: 9px 12px;
+        font-size: 12px;
+        outline: none;
+    }
+
+    .dash-welcome {
+        background: #fff;
+        border: 1px solid var(--dash-border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, .03);
+    }
+
+    .dash-heading {
+        justify-content: flex-start;
+    }
+
+    .dash-heading-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: #e8efff;
+        color: var(--dash-blue);
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+    }
+
+    .dash-title {
+        margin: 0;
+        font-size: 25px;
+        font-weight: 750;
+        letter-spacing: -.5px;
+    }
+
+    .dash-subtitle {
+        margin-top: 4px;
+        color: var(--dash-muted);
+        font-size: 12px;
+    }
+
+    .dash-online {
+        border-radius: 30px;
+        padding: 7px 12px;
+        color: #15803d;
+        background: #eaf8ef;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dash-kpis {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .dash-kpi {
+        color: #fff;
+        border-radius: 13px;
+        padding: 15px 14px;
+        min-height: 116px;
+        box-shadow: 0 5px 12px rgba(15, 23, 42, .08);
+    }
+
+        .dash-kpi.blue {
+            background: linear-gradient(135deg, #3278ed, #2555bd);
+        }
+
+        .dash-kpi.green {
+            background: linear-gradient(135deg, #20a574, #16845d);
+        }
+
+        .dash-kpi.teal {
+            background: linear-gradient(135deg, #20a7c5, #167f9c);
+        }
+
+        .dash-kpi.orange {
+            background: linear-gradient(135deg, #f5a623, #d97a0d);
+        }
+
+        .dash-kpi.red {
+            background: linear-gradient(135deg, #ef5350, #c72e3b);
+        }
+
+        .dash-kpi.purple {
+            background: linear-gradient(135deg, #9161ed, #7140ce);
+        }
+
+    .dash-kpi-top {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 10px;
+    }
+
+    .dash-kpi-icon {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, .19);
+        font-size: 17px;
+    }
+
+    .dash-kpi-number {
+        font-size: 27px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .dash-kpi-label {
+        font-size: 11px;
+        line-height: 1.4;
+        opacity: .95;
+    }
+
+    .dash-grid-two {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .dash-card {
+        background: #fff;
+        border: 1px solid var(--dash-border);
+        border-radius: 14px;
+        padding: 17px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, .025);
+        min-width: 0;
+    }
+
+    .dash-card-heading {
+        margin-bottom: 15px;
+    }
+
+    .dash-card-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+    .dash-card-subtitle {
+        margin-top: 4px;
+        color: var(--dash-muted);
+        font-size: 11px;
+    }
+
+    .dash-view-link {
+        color: var(--dash-blue);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dash-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .dash-action {
+        justify-content: flex-start;
+        text-decoration: none;
+        color: var(--dash-text);
+        border: 1px solid var(--dash-border);
+        border-radius: 10px;
+        padding: 12px;
+        min-height: 63px;
+        transition: .15s ease;
+    }
+
+        .dash-action:hover {
+            border-color: #b8ccff;
+            background: #f8faff;
+            transform: translateY(-1px);
+            color: var(--dash-text);
+        }
+
+    .dash-action-icon {
+        display: grid;
+        place-items: center;
+        flex: 0 0 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: #edf3ff;
+        color: var(--dash-blue);
+        font-size: 16px;
+    }
+
+    .dash-action-title {
+        display: block;
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    .dash-action-desc {
+        display: block;
+        margin-top: 3px;
+        color: var(--dash-muted);
+        font-size: 10px;
+    }
+
+    .dash-pipeline {
+        align-items: stretch;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .dash-stage {
+        flex: 1 1 100px;
+        text-align: center;
+        border: 1px solid var(--dash-border);
+        border-radius: 10px;
+        padding: 11px 8px;
+        background: #fff;
+    }
+
+    .dash-stage-count {
+        display: inline-grid;
+        place-items: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--dash-blue);
+        font-size: 11px;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+
+    .dash-stage-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .dash-stage.active {
+        background: #eefaf2;
+        border-color: #b7e3c4;
+    }
+
+        .dash-stage.active .dash-stage-count {
+            background: #22945c;
+        }
+
+    .dash-lower-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .dash-chart-summary {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-height: 190px;
+    }
+
+    .dash-donut {
+        flex: 0 0 130px;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: conic-gradient(#3b82f6 0 33%, #14b8a6 33% 50%, #f59e0b 50% 65%, #8b5cf6 65% 78%, #ef4444 78% 89%, #ec4899 89% 100%);
+        display: grid;
+        place-items: center;
+    }
+
+    .dash-donut-center {
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dash-donut-total {
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    .dash-donut-caption {
+        font-size: 10px;
+        color: var(--dash-muted);
+    }
+
+    .dash-legend {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dash-legend-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin: 10px 0;
+        font-size: 10px;
+    }
+
+    .dash-legend-name {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #475569;
+    }
+
+    .dash-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex: 0 0 8px;
+        background: #3b82f6;
+    }
+
+    .dash-activity {
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 11px 0;
+        border-bottom: 1px solid #eef2f7;
+    }
+
+        .dash-activity:last-child {
+            border-bottom: 0;
+        }
+
+    .dash-mini-icon {
+        flex: 0 0 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border-radius: 9px;
+        background: #edf3ff;
+        color: var(--dash-blue);
+        font-size: 14px;
+    }
+
+    .dash-activity-title {
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .dash-activity-desc {
+        font-size: 10px;
+        color: var(--dash-muted);
+        margin-top: 3px;
+    }
+
+    .dash-activity-time {
+        margin-left: auto;
+        white-space: nowrap;
+        color: var(--dash-muted);
+        font-size: 10px;
+    }
+
+    .dash-alert {
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px solid #eef2f7;
+    }
+
+        .dash-alert:last-child {
+            border-bottom: 0;
+        }
+
+    .dash-alert-icon {
+        flex: 0 0 29px;
+        height: 29px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        color: #b45309;
+        background: #fff4df;
+    }
+
+    .dash-alert-text {
+        color: #334155;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .dash-alert-code {
+        margin-left: auto;
+        color: var(--dash-muted);
+        font-size: 9px;
+        white-space: nowrap;
+    }
+
+    .dash-bottom-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(270px, 1fr);
+        gap: 16px;
+    }
+
+    .dash-chart {
+        height: 245px;
+        display: flex;
+        align-items: flex-end;
+        gap: 16px;
+        padding: 20px 8px 4px;
+        border-bottom: 1px solid var(--dash-border);
+        background: repeating-linear-gradient(to bottom, transparent 0, transparent 48px, #edf1f7 49px, transparent 50px);
+    }
+
+    .dash-bar-group {
+        display: flex;
+        flex: 1;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 4px;
+        height: 100%;
+        min-width: 0;
+    }
+
+    .dash-bar {
+        width: 15px;
+        max-width: 28%;
+        border-radius: 4px 4px 0 0;
+    }
+
+        .dash-bar.blue {
+            background: #3478e5;
+        }
+
+        .dash-bar.orange {
+            background: #f5a623;
+        }
+
+        .dash-bar.green {
+            background: #24a06b;
+        }
+
+    .dash-bar-label {
+        text-align: center;
+        color: var(--dash-muted);
+        font-size: 9px;
+        margin-top: 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .dash-chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 14px;
+        color: #475569;
+        font-size: 10px;
+    }
+
+    .dash-billing-row {
+        padding: 13px 0;
+        border-bottom: 1px solid #eef2f7;
+        font-size: 11px;
+    }
+
+        .dash-billing-row:last-child {
+            border-bottom: 0;
+        }
+
+    .dash-billing-label {
+        color: var(--dash-muted);
+    }
+
+    .dash-billing-value {
+        font-weight: 750;
+        text-align: right;
+    }
+
+    @@media (max-width: 1200px) {
+        .dash-kpis {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .dash-lower-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+            .dash-lower-grid .dash-card:last-child {
+                grid-column: 1 / -1;
+            }
+    }
+
+    @@media (max-width: 850px) {
+        .dash-grid-two, .dash-bottom-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dash-actions-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .dashboard-page {
+            padding: 10px;
+        }
+
+        .dash-kpis {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .dash-kpi {
+            padding: 12px;
+        }
+
+        .dash-kpi-number {
+            font-size: 23px;
+        }
+
+        .dash-lower-grid {
+            grid-template-columns: 1fr;
+        }
+
+            .dash-lower-grid .dash-card:last-child {
+                grid-column: auto;
+            }
+
+        .dash-actions-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dash-chart-summary {
+            flex-direction: column;
+        }
+
+        .dash-chart {
+            gap: 6px;
+        }
+
+        .dash-bar {
+            width: 9px;
+        }
+
+        .dash-title {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="container-fluid dashboard-page">
+    <div class="dash-topline">
+        <div class="dash-breadcrumb">Overview / Dashboard</div>
+        <input class="dash-search" type="search" placeholder="Search dashboard..." aria-label="Search dashboard" />
+    </div>
+
+    <section class="dash-welcome">
+        <div class="dash-heading">
+            <div class="dash-heading-icon">▥</div>
+            <div>
+                <h1 class="dash-title">Dashboard</h1>
+                <div class="dash-subtitle">Welcome back, Manoj Swain - Labour Management System</div>
+            </div>
+        </div>
+        <span class="dash-online">● System Online</span>
+    </section>
+
+    <section class="dash-kpis">
+        <div class="dash-kpi blue">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">♙</span><span class="dash-kpi-number">36</span></div>
+            <div class="dash-kpi-label">Registered Workmen</div>
+        </div>
+        <div class="dash-kpi green">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">↪</span><span class="dash-kpi-number">12</span></div>
+            <div class="dash-kpi-label">Entered Today (compliant)</div>
+        </div>
+        <div class="dash-kpi teal">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">✓</span><span class="dash-kpi-number">9</span></div>
+            <div class="dash-kpi-label">Approvals Pending</div>
+        </div>
+        <div class="dash-kpi orange">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">◎</span><span class="dash-kpi-number">93%</span></div>
+            <div class="dash-kpi-label">Manpower Fulfillment Today</div>
+        </div>
+        <div class="dash-kpi red">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">⊘</span><span class="dash-kpi-number">13</span></div>
+            <div class="dash-kpi-label">Entries Barred Today</div>
+        </div>
+        <div class="dash-kpi purple">
+            <div class="dash-kpi-top"><span class="dash-kpi-icon">▣</span><span class="dash-kpi-number">2</span></div>
+            <div class="dash-kpi-label">Cards Expiring in 30 Days</div>
+        </div>
+    </section>
+
+    <section class="dash-card" style="margin-bottom:16px;">
+        <div class="dash-card-heading">
+            <div>
+                <h2 class="dash-card-title">⚡ Quick Actions</h2>
+                <div class="dash-card-subtitle">Frequently used operations</div>
+            </div>
+        </div>
+        <div class="dash-actions-grid">
+            <a class="dash-action" href="/Workman/Index">
+                <span class="dash-action-icon">♙</span>
+                <span><span class="dash-action-title">Register Workmen</span><span class="dash-action-desc">KYL entry or Excel import</span></span>
+            </a>
+            <a class="dash-action" href="/WorkmanApproval/Index">
+                <span class="dash-action-icon">✓</span>
+                <span><span class="dash-action-title">Approve Workmen</span><span class="dash-action-desc">Department, medical, security, safety</span></span>
+            </a>
+            <a class="dash-action" href="/ComplianceCard/Index">
+                <span class="dash-action-icon">▤</span>
+                <span><span class="dash-action-title">Issue Compliance Card</span><span class="dash-action-desc">Photo, fingerprint, print</span></span>
+            </a>
+            <a class="dash-action" href="/Timesheet/Index">
+                <span class="dash-action-icon">◷</span>
+                <span><span class="dash-action-title">Approve Timesheets</span><span class="dash-action-desc">Single punch and overtime</span></span>
+            </a>
+        </div>
+    </section>
+
+    <section class="dash-card" style="margin-bottom:16px;">
+        <div class="dash-card-heading">
+            <div>
+                <h2 class="dash-card-title">♧ Onboarding Pipeline</h2>
+                <div class="dash-card-subtitle">Where every registered worker is between KYL and card issue</div>
+            </div>
+            <a class="dash-view-link" href="/WorkmanApproval/Index">View process flow</a>
+        </div>
+        <div class="dash-pipeline">
+            <div class="dash-stage"><div class="dash-stage-count" style="background:#94a3b8;">1</div><div class="dash-stage-label">Draft</div></div>
+            <div class="dash-stage"><div class="dash-stage-count">2</div><div class="dash-stage-label">Department</div></div>
+            <div class="dash-stage"><div class="dash-stage-count">3</div><div class="dash-stage-label">Medical</div></div>
+            <div class="dash-stage"><div class="dash-stage-count">2</div><div class="dash-stage-label">Security</div></div>
+            <div class="dash-stage"><div class="dash-stage-count">2</div><div class="dash-stage-label">Safety</div></div>
+            <div class="dash-stage"><div class="dash-stage-count">1</div><div class="dash-stage-label">Card Issue</div></div>
+            <div class="dash-stage active"><div class="dash-stage-count">25</div><div class="dash-stage-label">Active</div></div>
+        </div>
+    </section>
+
+    <section class="dash-lower-grid">
+        <div class="dash-card">
+            <div class="dash-card-heading">
+                <div><h2 class="dash-card-title">♙ Workforce by Contractor</h2><div class="dash-card-subtitle">Registered workmen</div></div>
+            </div>
+            <div class="dash-chart-summary">
+                <div class="dash-donut"><div class="dash-donut-center"><div class="dash-donut-total">36</div><div class="dash-donut-caption">Total</div></div></div>
+                <div class="dash-legend">
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot"></i>Utkal Manpower Services</span><b>12</b></div>
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot" style="background:#14b8a6;"></i>Shree Jagannath Enterprises</span><b>5</b></div>
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot" style="background:#f59e0b;"></i>Mahanadi Engineering Works</span><b>6</b></div>
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot" style="background:#8b5cf6;"></i>Konark Facility Services</span><b>5</b></div>
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot" style="background:#ef4444;"></i>Brahmani Industrial Contractors</span><b>4</b></div>
+                    <div class="dash-legend-row"><span class="dash-legend-name"><i class="dash-dot" style="background:#ec4899;"></i>Kalinga Technical Services</span><b>4</b></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-heading">
+                <div><h2 class="dash-card-title">◴ Recent Activities</h2><div class="dash-card-subtitle">Latest system activities</div></div>
+                <a class="dash-view-link" href="#">View All</a>
+            </div>
+            <div class="dash-activity"><span class="dash-mini-icon">♙</span><div><div class="dash-activity-title">New worker submitted</div><div class="dash-activity-desc">CW-10476 · Anita Hansdah</div></div><span class="dash-activity-time">10:30</span></div>
+            <div class="dash-activity"><span class="dash-mini-icon" style="background:#e8f8ee;color:#16834c;">✓</span><div><div class="dash-activity-title">Medical approval recorded</div><div class="dash-activity-desc">CW-10441 · Manoj Kumar</div></div><span class="dash-activity-time">09:58</span></div>
+            <div class="dash-activity"><span class="dash-mini-icon" style="background:#fff0f0;color:#c73545;">⊘</span><div><div class="dash-activity-title">Entry barred at Contractor Gate</div><div class="dash-activity-desc">Sabita Nayak · Female night-shift rule</div></div><span class="dash-activity-time">06:12</span></div>
+            <div class="dash-activity"><span class="dash-mini-icon">▤</span><div><div class="dash-activity-title">Compliance card issued</div><div class="dash-activity-desc">CVC-2028-0399 · Minati Sahoo</div></div><span class="dash-activity-time">09:15</span></div>
+            <div class="dash-activity"><span class="dash-mini-icon" style="background:#fff4df;color:#b45309;">▣</span><div><div class="dash-activity-title">Contractor bill put on hold</div><div class="dash-activity-desc">INV/05/26/27-0768 · Variance 5.6%</div></div><span class="dash-activity-time">Yesterday</span></div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-heading">
+                <div><h2 class="dash-card-title">⚠ Compliance Alerts</h2><div class="dash-card-subtitle">Items that will affect entry or hold payment</div></div>
+                <a class="dash-view-link" href="#">View All</a>
+            </div>
+            <div class="dash-alert"><span class="dash-alert-icon">!</span><span class="dash-alert-text"><b>Konark Facility Services</b> - Labour licence expired on 15 Sep 2026</span><span class="dash-alert-code">CR-03</span></div>
+            <div class="dash-alert"><span class="dash-alert-icon">!</span><span class="dash-alert-text"><b>W/O 2026/0007</b> - Civil expired on 31 Aug 2026 · 18 workers deployed</span><span class="dash-alert-code">CR-07</span></div>
+            <div class="dash-alert"><span class="dash-alert-icon">♙</span><span class="dash-alert-text"><b>Brahmani Industrial Contractors</b> - 41 deployed against licence capacity 40</span><span class="dash-alert-code">CR-11</span></div>
+            <div class="dash-alert"><span class="dash-alert-icon">▣</span><span class="dash-alert-text"><b>Pratish Nayak</b> - Medical fitness expired 10 Sep 2026</span><span class="dash-alert-code">CR-08</span></div>
+            <div class="dash-alert"><span class="dash-alert-icon">▲</span><span class="dash-alert-text"><b>Bikash Sahoo</b> - Safety induction validity expired</span><span class="dash-alert-code">CR-09</span></div>
+        </div>
+    </section>
+
+    <section class="dash-bottom-grid">
+        <div class="dash-card">
+            <div class="dash-card-heading">
+                <div><h2 class="dash-card-title">▥ Required, Committed and Supplied Manpower by Department</h2><div class="dash-card-subtitle">Today, both shifts</div></div>
+            </div>
+            <div class="dash-chart">
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:82%;"></div><div class="dash-bar orange" style="height:77%;"></div><div class="dash-bar green" style="height:73%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:50%;"></div><div class="dash-bar orange" style="height:46%;"></div><div class="dash-bar green" style="height:44%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:44%;"></div><div class="dash-bar orange" style="height:41%;"></div><div class="dash-bar green" style="height:43%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:36%;"></div><div class="dash-bar orange" style="height:32%;"></div><div class="dash-bar green" style="height:30%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:30%;"></div><div class="dash-bar orange" style="height:28%;"></div><div class="dash-bar green" style="height:26%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:39%;"></div><div class="dash-bar orange" style="height:42%;"></div><div class="dash-bar green" style="height:45%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:35%;"></div><div class="dash-bar orange" style="height:37%;"></div><div class="dash-bar green" style="height:34%;"></div></div>
+                <div class="dash-bar-group"><div class="dash-bar blue" style="height:42%;"></div><div class="dash-bar orange" style="height:40%;"></div><div class="dash-bar green" style="height:38%;"></div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;">
+                <div class="dash-bar-label">Production</div><div class="dash-bar-label">Material</div><div class="dash-bar-label">Hand</div><div class="dash-bar-label">Maintenance</div><div class="dash-bar-label">Civil</div><div class="dash-bar-label">Housekeeping</div><div class="dash-bar-label">Utilities</div><div class="dash-bar-label">Stores</div>
+            </div>
+            <div class="dash-chart-legend"><span><i class="dash-dot"></i> Required</span><span><i class="dash-dot" style="background:#f5a623;"></i> Committed</span><span><i class="dash-dot" style="background:#24a06b;"></i> Supplied</span></div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-heading">
+                <div><h2 class="dash-card-title">▣ Wages and Billing - August 2026</h2><div class="dash-card-subtitle">From approved payable days</div></div>
+                <a class="dash-view-link" href="#">View All</a>
+            </div>
+            <div class="dash-billing-row"><span class="dash-billing-label">Gross wages</span><span class="dash-billing-value">₹ 4,29,371.00</span></div>
+            <div class="dash-billing-row"><span class="dash-billing-label">Net wages payable</span><span class="dash-billing-value">₹ 3,80,014.00</span></div>
+            <div class="dash-billing-row"><span class="dash-billing-label">PF + ESIC (employee share)</span><span class="dash-billing-value">₹ 46,677.00</span></div>
+            <div class="dash-billing-row"><span class="dash-billing-label">Expected contractor bills</span><span class="dash-billing-value">₹ 7,00,327.14</span></div>
+            <div class="dash-billing-row"><span class="dash-billing-label">Submitted contractor bills</span><span class="dash-billing-value">₹ 7,22,027.14</span></div>
+            <div class="dash-billing-row"><span class="dash-billing-label">Bill variance</span><span class="dash-billing-value" style="color:#dc2626;">₹ 21,700.00</span></div>
+        </div>
+    </section>
+</div>

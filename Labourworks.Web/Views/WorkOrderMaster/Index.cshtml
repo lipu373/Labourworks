@@ -1,0 +1,1311 @@
+﻿@{
+    ViewData["Title"] = "Work Order Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+
+<style>
+    .um-page {
+        padding: 25px;
+        min-height: calc(100vh - 80px);
+        background: #f5f7fb;
+        color: #172033;
+        border-radius: 12px;
+    }
+
+    .um-header, .um-card-header, .um-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .um-header {
+        margin-bottom: 22px;
+    }
+
+    .um-title {
+        margin: 0;
+        font-size: 25px;
+        font-weight: 750;
+    }
+
+    .um-subtitle {
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .um-card {
+        margin-bottom: 22px;
+        overflow: hidden;
+        border: 1px solid #e5eaf2;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .025);
+    }
+
+    .um-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .um-card-header h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+    .um-card-body {
+        padding: 22px;
+    }
+
+    .um-section-title {
+        margin: 6px 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #edf0f5;
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .um-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .um-required {
+        color: #dc2626;
+    }
+
+    .um-input {
+        display: block;
+        width: 100%;
+        min-height: 41px;
+        padding: 9px 11px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #1e293b;
+        font-size: 13px;
+    }
+
+        .um-input:focus {
+            border-color: #818cf8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+        }
+
+        .um-input[readonly] {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
+
+    .um-error {
+        margin-top: 5px;
+        color: #dc2626;
+        font-size: 12px;
+    }
+
+    .um-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 9px 14px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 650;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .um-btn-primary {
+        border-color: #4f46e5;
+        background: #4f46e5;
+        color: #fff;
+    }
+
+        .um-btn-primary:hover {
+            border-color: #4338ca;
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .um-btn:disabled {
+        opacity: .65;
+        cursor: not-allowed;
+    }
+
+    .um-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #workOrderTable {
+        width: 100% !important;
+        font-size: 12px;
+    }
+
+        #workOrderTable thead th {
+            padding: 13px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        #workOrderTable tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+    .um-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .um-status-active {
+        background: #effaf2;
+        color: #16803d;
+    }
+
+    .um-status-expired {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .um-status-closed {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .um-icon-btn {
+        width: 32px;
+        height: 32px;
+        margin-right: 4px;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .um-edit {
+        color: #4f46e5;
+    }
+
+    .um-delete {
+        color: #dc2626;
+    }
+
+    .um-count {
+        color: #4f46e5;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .um-page .dataTables_wrapper {
+        padding: 16px 20px;
+    }
+
+    .um-page .dataTables_filter input,
+    .um-page .dataTables_length select {
+        padding: 7px;
+        border: 1px solid #dce3ed;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .um-page .dataTables_info,
+    .um-page .dataTables_paginate {
+        font-size: 12px;
+    }
+
+    .um-help {
+        margin-top: 5px;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    .um-message {
+        display: none;
+        margin: 15px 22px 0;
+        padding: 11px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+    }
+
+    .um-message-success {
+        display: block;
+        background: #effaf2;
+        color: #16803d;
+    }
+
+    .um-message-error {
+        display: block;
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .um-page .is-invalid {
+        border-color: #dc2626 !important;
+    }
+
+    @@media(max-width: 767px) {
+        .um-page {
+            padding: 12px;
+        }
+
+        .um-card-body {
+            padding: 15px;
+        }
+
+        .um-card-header {
+            padding: 15px;
+        }
+
+        .um-title {
+            font-size: 21px;
+        }
+
+        .um-page .dataTables_wrapper {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="container-fluid um-page">
+
+    @Html.AntiForgeryToken()
+
+    <div class="um-header">
+        <div>
+            <div class="text-secondary small mb-2">
+                Administration / Master Data / Work Order Master
+            </div>
+
+            <h1 class="um-title">
+                <i class="bi bi-clipboard-check-fill text-primary me-2"></i>
+                Work Order Master
+            </h1>
+
+            <div class="um-subtitle">
+                Register and manage work orders, contractors, plants and departments.
+            </div>
+        </div>
+
+        <button type="button" id="addWorkOrderBtn"
+                class="um-btn um-btn-primary">
+            <i class="bi bi-plus-lg"></i> Add Work Order
+        </button>
+    </div>
+
+    <div id="pageMessage" class="um-message" role="alert"></div>
+
+    <!-- Work Order Form -->
+    <div class="um-card" id="workOrderFormCard" style="display:none;">
+
+        <div class="um-card-header">
+            <div>
+                <h5 id="formTitle">Add Work Order</h5>
+                <div class="um-subtitle" id="formSubtitle">
+                    Enter work order details below.
+                </div>
+            </div>
+
+            <span id="formMode" class="um-count">New Record</span>
+        </div>
+
+        <div class="um-card-body">
+
+            <form id="workOrderForm" autocomplete="off">
+                <input type="hidden" id="WorkOrderId" value="0" />
+
+                <div class="um-section-title">
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    Work Order Information
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="WorkOrderNumber">
+                            Work Order Number <span class="um-required">*</span>
+                        </label>
+
+                        <input id="WorkOrderNumber"
+                               class="um-input"
+                               maxlength="30"
+                               required
+                               placeholder="e.g. WO/2026/0006" />
+
+                        <div class="um-error" data-error="WorkOrderNumber"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ContractorId">
+                            Contractor <span class="um-required">*</span>
+                        </label>
+
+                        <select id="ContractorId" class="um-input" required>
+                            <option value="">-- Select Contractor --</option>
+                        </select>
+
+                        <div class="um-error" data-error="ContractorId"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="PlantId">
+                            Plant <span class="um-required">*</span>
+                        </label>
+
+                        <select id="PlantId" class="um-input" required>
+                            <option value="">-- Select Plant --</option>
+                        </select>
+
+                        <div class="um-error" data-error="PlantId"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="DepartmentId">
+                            Department <span class="um-required">*</span>
+                        </label>
+
+                        <select id="DepartmentId" class="um-input" required>
+                            <option value="">-- Select Department --</option>
+                        </select>
+
+                        <div class="um-error" data-error="DepartmentId"></div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="um-label" for="DescriptionOfWork">
+                            Description of Work <span class="um-required">*</span>
+                        </label>
+
+                        <textarea id="DescriptionOfWork"
+                                  class="um-input"
+                                  rows="2"
+                                  maxlength="1000"
+                                  required
+                                  placeholder="Enter description of work"></textarea>
+
+                        <div class="um-error" data-error="DescriptionOfWork"></div>
+                    </div>
+
+                </div>
+
+                <div class="um-section-title mt-4">
+                    <i class="bi bi-calendar-range me-2"></i>
+                    Validity and Capacity
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ValidFrom">
+                            Valid From <span class="um-required">*</span>
+                        </label>
+
+                        <input id="ValidFrom"
+                               type="date"
+                               class="um-input"
+                               required />
+
+                        <div class="um-error" data-error="ValidFrom"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ValidTo">
+                            Valid To <span class="um-required">*</span>
+                        </label>
+
+                        <input id="ValidTo"
+                               type="date"
+                               class="um-input"
+                               required />
+
+                        <div class="um-error" data-error="ValidTo"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ApprovedCapacity">
+                            Approved Capacity <span class="um-required">*</span>
+                        </label>
+
+                        <input id="ApprovedCapacity"
+                               type="number"
+                               class="um-input"
+                               min="0"
+                               step="1"
+                               value="0"
+                               required />
+
+                        <div class="um-error" data-error="ApprovedCapacity"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="DeployedCount">
+                            Deployed Count
+                        </label>
+
+                        <input id="DeployedCount"
+                               type="number"
+                               class="um-input"
+                               value="0"
+                               readonly />
+
+                        <div class="um-help">
+                            Read-only. Existing deployment count is preserved during editing.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="um-section-title mt-4">
+                    <i class="bi bi-currency-rupee me-2"></i>
+                    Commercial Information
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="RatePerDay">
+                            Rate Per Day <span class="um-required">*</span>
+                        </label>
+
+                        <input id="RatePerDay"
+                               type="number"
+                               class="um-input"
+                               min="0"
+                               step="0.01"
+                               value="0.00"
+                               required />
+
+                        <div class="um-error" data-error="RatePerDay"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="ServiceCharge">
+                            Service Charge (%)
+                        </label>
+
+                        <input id="ServiceCharge"
+                               type="number"
+                               class="um-input"
+                               min="0"
+                               max="999.99"
+                               step="0.01"
+                               placeholder="Optional" />
+
+                        <div class="um-error" data-error="ServiceCharge"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="um-label" for="Status">
+                            Status <span class="um-required">*</span>
+                        </label>
+
+                        <select id="Status" class="um-input" required>
+                            <option value="Active">Active</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+
+                        <div class="um-error" data-error="Status"></div>
+                    </div>
+
+                </div>
+
+                <div id="formError" class="um-error mt-3"></div>
+
+                <div class="um-actions mt-4">
+                    <button type="button" id="cancelBtn" class="um-btn">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+
+                    <button type="submit" id="saveBtn"
+                            class="um-btn um-btn-primary">
+                        <i class="bi bi-check2-circle"></i> Save Work Order
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Work Order List -->
+    <div class="um-card">
+
+        <div class="um-card-header">
+            <div>
+                <h5>
+                    <i class="bi bi-list-ul text-primary me-2"></i>
+                    Registered Work Orders
+                </h5>
+
+                <div class="um-subtitle">
+                    View and manage registered work orders.
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span id="listCount" class="um-count">0 Records</span>
+
+                <button type="button" id="refreshBtn" class="um-btn">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div id="tableMessage" class="px-3 pt-3 text-secondary small"></div>
+
+        <div class="um-table-wrap">
+            <table id="workOrderTable" class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Work Order No.</th>
+                        <th>Contractor</th>
+                        <th>Plant</th>
+                        <th>Department</th>
+                        <th>Description</th>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th>Approved</th>
+                        <th>Deployed</th>
+                        <th>Rate / Day</th>
+                        <th>Service Charge (%)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="workOrderTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(function () {
+
+            const baseUrl = '@Url.Content("~/WorkOrderMaster")';
+
+            let workOrders = [];
+            let dataTable = null;
+            let dropdownsLoaded = false;
+
+            function token() {
+                return $('input[name="__RequestVerificationToken"]').val();
+            }
+
+            function safe(value) {
+                return $('<div>').text(value == null ? '' : String(value)).html();
+            }
+
+            function showMessage(message, isError = false) {
+                const box = $('#pageMessage');
+
+                box.removeClass('um-message-success um-message-error')
+                    .addClass(isError ? 'um-message-error' : 'um-message-success')
+                    .text(message)
+                    .stop(true, true)
+                    .show();
+
+                $('html, body').animate({
+                    scrollTop: $('.um-page').offset().top - 50
+                }, 150);
+            }
+
+            function hideMessage() {
+                $('#pageMessage')
+                    .hide()
+                    .text('')
+                    .removeClass('um-message-success um-message-error');
+            }
+
+            function apiError(xhr, fallback) {
+                return xhr.responseJSON?.message || fallback;
+            }
+
+            function clearErrors() {
+                $('#formError').text('');
+                $('[data-error]').text('');
+                $('#workOrderForm .um-input').removeClass('is-invalid');
+            }
+
+            function setError(field, message) {
+                $('#' + field).addClass('is-invalid');
+                $('[data-error="' + field + '"]').text(message);
+            }
+
+            function resetForm() {
+                $('#workOrderForm')[0].reset();
+
+                $('#WorkOrderId').val(0);
+                $('#DeployedCount').val(0);
+                $('#Status').val('Active');
+
+                $('#formTitle').text('Add Work Order');
+                $('#formSubtitle').text('Enter work order details below.');
+                $('#formMode').text('New Record');
+
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Save Work Order'
+                );
+
+                clearErrors();
+            }
+
+            function openForm() {
+                $('#workOrderFormCard').stop(true, true).slideDown(200);
+
+                $('html, body').animate({
+                    scrollTop: $('#workOrderFormCard').offset().top - 70
+                }, 200);
+            }
+
+            function closeForm() {
+                $('#workOrderFormCard').stop(true, true).slideUp(200);
+                resetForm();
+            }
+
+            function fillDropdown(selector, items, placeholder) {
+                const dropdown = $(selector);
+
+                dropdown.empty();
+                dropdown.append(
+                    $('<option>').val('').text(placeholder)
+                );
+
+                (items || []).forEach(function (item) {
+                    dropdown.append(
+                        $('<option>')
+                            .val(item.contractorId ??
+                                 item.plantId ??
+                                 item.departmentId ??
+                                 item.ContractorId ??
+                                 item.PlantId ??
+                                 item.DepartmentId)
+                            .text(item.name ?? item.Name ?? '')
+                    );
+                });
+            }
+
+            function loadDropdowns(callback) {
+                $.ajax({
+                    url: baseUrl + '/GetDropdowns',
+                    type: 'GET',
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.success !== true) {
+                            showMessage(
+                                response?.message || 'Unable to load dropdowns.',
+                                true
+                            );
+                            return;
+                        }
+
+                        fillDropdown(
+                            '#ContractorId',
+                            response.contractors,
+                            '-- Select Contractor --'
+                        );
+
+                        fillDropdown(
+                            '#PlantId',
+                            response.plants,
+                            '-- Select Plant --'
+                        );
+
+                        fillDropdown(
+                            '#DepartmentId',
+                            response.departments,
+                            '-- Select Department --'
+                        );
+
+                        dropdownsLoaded = true;
+
+                        if (typeof callback === 'function') {
+                            callback();
+                        }
+                    },
+
+                    error: function (xhr) {
+                        showMessage(
+                            apiError(xhr, 'Unable to load dropdown data.'),
+                            true
+                        );
+                    }
+                });
+            }
+
+            function statusBadge(status) {
+                const normalized = String(status || '').toLowerCase();
+
+                let cssClass = 'um-status-closed';
+
+                if (normalized === 'active') {
+                    cssClass = 'um-status-active';
+                } else if (normalized === 'expired') {
+                    cssClass = 'um-status-expired';
+                }
+
+                return '<span class="um-status ' + cssClass + '">' +
+                    safe(status) + '</span>';
+            }
+
+            function formatDate(value) {
+                if (!value) return '-';
+
+                const date = String(value).substring(0, 10);
+                const parts = date.split('-');
+
+                if (parts.length !== 3) return safe(date);
+
+                return safe(parts[2] + '-' + parts[1] + '-' + parts[0]);
+            }
+
+            function formatNumber(value) {
+                if (value === null || value === undefined || value === '') {
+                    return '-';
+                }
+
+                const number = Number(value);
+
+                return Number.isFinite(number) ? number.toFixed(2) : '-';
+            }
+
+            function renderTable(data) {
+                if ($.fn.DataTable.isDataTable('#workOrderTable')) {
+                    $('#workOrderTable').DataTable().destroy();
+                }
+
+                let rows = '';
+
+                data.forEach(function (item, index) {
+
+                    rows += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${safe(item.workOrderNumber)}</td>
+                            <td>${safe(item.contractorName)}</td>
+                            <td>${safe(item.plantName)}</td>
+                            <td>${safe(item.departmentName)}</td>
+                            <td>${safe(item.descriptionOfWork)}</td>
+                            <td>${formatDate(item.validFrom)}</td>
+                            <td>${formatDate(item.validTo)}</td>
+                            <td>${safe(item.approvedCapacity)}</td>
+                            <td>${safe(item.deployedCount ?? 0)}</td>
+                            <td>${formatNumber(item.ratePerDay)}</td>
+                            <td>${item.serviceCharge == null
+                                ? '-'
+                                : formatNumber(item.serviceCharge)}</td>
+                            <td>${statusBadge(item.status)}</td>
+                            <td>
+                                <button type="button"
+                                        class="um-icon-btn um-edit editBtn"
+                                        data-id="${safe(item.workOrderId)}"
+                                        title="Edit work order">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="um-icon-btn um-delete deleteBtn"
+                                        data-id="${safe(item.workOrderId)}"
+                                        title="Delete work order">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+                });
+
+                $('#workOrderTableBody').html(rows);
+
+                $('#listCount').text(
+                    data.length + (data.length === 1 ? ' Record' : ' Records')
+                );
+
+                dataTable = $('#workOrderTable').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [5, 10, 25, 50],
+                    ordering: true,
+                    searching: true,
+                    autoWidth: false,
+                    order: [],
+                    scrollX: true,
+                    columnDefs: [
+                        { targets: [0, 13], orderable: false }
+                    ],
+                    language: {
+                        emptyTable: 'No work order records available',
+                        zeroRecords: 'No matching work orders found',
+                        search: '',
+                        searchPlaceholder: 'Search work orders...',
+                        lengthMenu: 'Show _MENU_ entries'
+                    }
+                });
+
+                dataTable.on('draw.dt', function () {
+                    const info = dataTable.page.info();
+
+                    dataTable.column(0, { page: 'current' })
+                        .nodes().each(function (cell, index) {
+                            cell.textContent = info.start + index + 1;
+                        });
+                });
+            }
+
+            function loadWorkOrders() {
+                $('#refreshBtn').prop('disabled', true);
+                $('#tableMessage').text('Loading work orders...');
+
+                $.ajax({
+                    url: baseUrl + '/GetAll',
+                    type: 'GET',
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.success !== true) {
+                            workOrders = [];
+                            renderTable([]);
+
+                            $('#tableMessage').text(
+                                response?.message || 'Unable to load work orders.'
+                            );
+                            return;
+                        }
+
+                        workOrders = response.data || [];
+                        renderTable(workOrders);
+                        $('#tableMessage').text('');
+                    },
+
+                    error: function (xhr) {
+                        workOrders = [];
+                        renderTable([]);
+
+                        $('#tableMessage').text(
+                            apiError(xhr, 'Unable to load work orders.')
+                        );
+                    },
+
+                    complete: function () {
+                        $('#refreshBtn').prop('disabled', false);
+                    }
+                });
+            }
+
+            function validateForm() {
+                clearErrors();
+
+                let valid = true;
+
+                const requiredFields = [
+                    ['WorkOrderNumber', 'Work Order Number is required.'],
+                    ['ContractorId', 'Please select a Contractor.'],
+                    ['PlantId', 'Please select a Plant.'],
+                    ['DepartmentId', 'Please select a Department.'],
+                    ['DescriptionOfWork', 'Description of Work is required.'],
+                    ['ValidFrom', 'Valid From is required.'],
+                    ['ValidTo', 'Valid To is required.'],
+                    ['ApprovedCapacity', 'Approved Capacity is required.'],
+                    ['RatePerDay', 'Rate Per Day is required.'],
+                    ['Status', 'Please select a Status.']
+                ];
+
+                requiredFields.forEach(function (item) {
+                    const field = item[0];
+                    const message = item[1];
+                    const value = $('#' + field).val();
+
+                    if (value == null || String(value).trim() === '') {
+                        setError(field, message);
+                        valid = false;
+                    }
+                });
+
+                const workOrderNumber = $('#WorkOrderNumber').val().trim();
+
+                if (workOrderNumber.length > 30) {
+                    setError(
+                        'WorkOrderNumber',
+                        'Work Order Number cannot exceed 30 characters.'
+                    );
+                    valid = false;
+                }
+
+                if ($('#DescriptionOfWork').val().trim().length > 1000) {
+                    setError(
+                        'DescriptionOfWork',
+                        'Description cannot exceed 1000 characters.'
+                    );
+                    valid = false;
+                }
+
+                const validFrom = $('#ValidFrom').val();
+                const validTo = $('#ValidTo').val();
+
+                if (validFrom && validTo && validTo < validFrom) {
+                    setError(
+                        'ValidTo',
+                        'Valid To must be on or after Valid From.'
+                    );
+                    valid = false;
+                }
+
+                const capacity = Number($('#ApprovedCapacity').val());
+
+                if (!Number.isInteger(capacity) || capacity < 0) {
+                    setError(
+                        'ApprovedCapacity',
+                        'Approved Capacity must be a non-negative whole number.'
+                    );
+                    valid = false;
+                }
+
+                const rate = Number($('#RatePerDay').val());
+
+                if (!Number.isFinite(rate) || rate < 0) {
+                    setError(
+                        'RatePerDay',
+                        'Rate Per Day cannot be negative.'
+                    );
+                    valid = false;
+                }
+
+                const serviceValue = $('#ServiceCharge').val();
+
+                if (serviceValue !== '') {
+                    const service = Number(serviceValue);
+
+                    if (!Number.isFinite(service) ||
+                        service < 0 ||
+                        service > 999.99 ||
+                        Math.round(service * 100) !== service * 100) {
+                        setError(
+                            'ServiceCharge',
+                            'Service Charge must be between 0 and 999.99, with up to 2 decimal places.'
+                        );
+                        valid = false;
+                    }
+                }
+
+                if (!['Active', 'Expired', 'Closed'].includes($('#Status').val())) {
+                    setError('Status', 'Please select a valid status.');
+                    valid = false;
+                }
+
+                return valid;
+            }
+
+            function getDto() {
+                return {
+                    workOrderId: Number($('#WorkOrderId').val()) || 0,
+                    workOrderNumber: $('#WorkOrderNumber').val().trim(),
+                    contractorId: Number($('#ContractorId').val()),
+                    plantId: Number($('#PlantId').val()),
+                    departmentId: Number($('#DepartmentId').val()),
+                    descriptionOfWork: $('#DescriptionOfWork').val().trim(),
+                    validFrom: $('#ValidFrom').val(),
+                    validTo: $('#ValidTo').val(),
+                    approvedCapacity: Number($('#ApprovedCapacity').val()),
+                    deployedCount: Number($('#DeployedCount').val()) || 0,
+                    ratePerDay: Number($('#RatePerDay').val()),
+                    serviceCharge: $('#ServiceCharge').val() === ''
+                        ? null
+                        : Number($('#ServiceCharge').val()),
+                    status: $('#Status').val()
+                };
+            }
+
+            function fillForm(item) {
+                $('#WorkOrderId').val(item.workOrderId);
+                $('#WorkOrderNumber').val(item.workOrderNumber || '');
+                $('#ContractorId').val(String(item.contractorId));
+                $('#PlantId').val(String(item.plantId));
+                $('#DepartmentId').val(String(item.departmentId));
+                $('#DescriptionOfWork').val(item.descriptionOfWork || '');
+
+                $('#ValidFrom').val(
+                    item.validFrom ? String(item.validFrom).substring(0, 10) : ''
+                );
+
+                $('#ValidTo').val(
+                    item.validTo ? String(item.validTo).substring(0, 10) : ''
+                );
+
+                $('#ApprovedCapacity').val(item.approvedCapacity ?? 0);
+                $('#DeployedCount').val(item.deployedCount ?? 0);
+                $('#RatePerDay').val(item.ratePerDay ?? 0);
+
+                $('#ServiceCharge').val(
+                    item.serviceCharge == null ? '' : item.serviceCharge
+                );
+
+                $('#Status').val(item.status || 'Active');
+
+                $('#formTitle').text('Edit Work Order');
+                $('#formSubtitle').text('Update the selected work order.');
+                $('#formMode').text('Edit Record');
+
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Update Work Order'
+                );
+
+                clearErrors();
+                hideMessage();
+                openForm();
+            }
+
+            $('#addWorkOrderBtn').on('click', function () {
+                resetForm();
+                hideMessage();
+
+                if (!dropdownsLoaded) {
+                    loadDropdowns(openForm);
+                } else {
+                    openForm();
+                }
+            });
+
+            $('#cancelBtn').on('click', closeForm);
+            $('#refreshBtn').on('click', loadWorkOrders);
+
+            $('#ValidFrom').on('change', function () {
+                const from = $(this).val();
+                $('#ValidTo').attr('min', from || '');
+
+                const to = $('#ValidTo').val();
+
+                if (from && to && to < from) {
+                    setError(
+                        'ValidTo',
+                        'Valid To must be on or after Valid From.'
+                    );
+                } else {
+                    $('#ValidTo').removeClass('is-invalid');
+                    $('[data-error="ValidTo"]').text('');
+                }
+            });
+
+            $('#ValidTo').on('change', function () {
+                const from = $('#ValidFrom').val();
+                const to = $(this).val();
+
+                if (from && to && to < from) {
+                    setError(
+                        'ValidTo',
+                        'Valid To must be on or after Valid From.'
+                    );
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $('[data-error="ValidTo"]').text('');
+                }
+            });
+
+            $('#workOrderForm').on('submit', function (e) {
+                e.preventDefault();
+                hideMessage();
+
+                if (!this.reportValidity()) {
+                    return;
+                }
+
+                if (!validateForm()) {
+                    $('#formError').text(
+                        'Please correct the validation errors above.'
+                    );
+                    return;
+                }
+
+                const dto = getDto();
+                const isEdit = dto.workOrderId > 0;
+                const url = isEdit
+                    ? baseUrl + '/Update'
+                    : baseUrl + '/Create';
+
+                $('#saveBtn').prop('disabled', true);
+
+                $('#saveBtn').html(
+                    '<span class="spinner-border spinner-border-sm"></span> ' +
+                    (isEdit ? 'Updating...' : 'Saving...')
+                );
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(dto),
+                    headers: {
+                        'RequestVerificationToken': token()
+                    },
+
+                    success: function (response) {
+                        if (response && response.success === true) {
+                            closeForm();
+
+                            showMessage(
+                                response.message ||
+                                (isEdit
+                                    ? 'Work order updated successfully.'
+                                    : 'Work order created successfully.')
+                            );
+
+                            loadWorkOrders();
+                        } else {
+                            $('#formError').text(
+                                response?.message || 'Unable to save work order.'
+                            );
+                        }
+                    },
+
+                    error: function (xhr) {
+                        $('#formError').text(
+                            apiError(xhr, 'An error occurred while saving the work order.')
+                        );
+                    },
+
+                    complete: function () {
+                        $('#saveBtn').prop('disabled', false);
+
+                        $('#saveBtn').html(
+                            Number($('#WorkOrderId').val()) > 0
+                                ? '<i class="bi bi-check2-circle"></i> Update Work Order'
+                                : '<i class="bi bi-check2-circle"></i> Save Work Order'
+                        );
+                    }
+                });
+            });
+
+            $('#workOrderTable').on('click', '.editBtn', function () {
+                const id = Number($(this).attr('data-id'));
+
+                $.ajax({
+                    url: baseUrl + '/GetById',
+                    type: 'GET',
+                    data: { id: id },
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.success !== true || !response.data) {
+                            showMessage(
+                                response?.message || 'Work order not found.',
+                                true
+                            );
+                            return;
+                        }
+
+                        if (!dropdownsLoaded) {
+                            loadDropdowns(function () {
+                                fillForm(response.data);
+                            });
+                        } else {
+                            fillForm(response.data);
+                        }
+                    },
+
+                    error: function (xhr) {
+                        showMessage(
+                            apiError(xhr, 'Unable to load work order details.'),
+                            true
+                        );
+                    }
+                });
+            });
+
+            $('#workOrderTable').on('click', '.deleteBtn', function () {
+                const id = Number($(this).attr('data-id'));
+
+                const item = workOrders.find(
+                    x => Number(x.workOrderId) === id
+                );
+
+                const number = item ? item.workOrderNumber : id;
+
+                function deleteWorkOrder() {
+                    $.ajax({
+                        url: baseUrl + '/Delete',
+                        type: 'POST',
+                        data: { id: id },
+                        headers: {
+                            'RequestVerificationToken': token()
+                        },
+
+                        success: function (response) {
+                            if (response && response.success === true) {
+                                if (Number($('#WorkOrderId').val()) === id) {
+                                    closeForm();
+                                }
+
+                                showMessage(
+                                    response.message ||
+                                    'Work order deleted successfully.'
+                                );
+
+                                loadWorkOrders();
+                            } else {
+                                showMessage(
+                                    response?.message || 'Unable to delete work order.',
+                                    true
+                                );
+                            }
+                        },
+
+                        error: function (xhr) {
+                            showMessage(
+                                apiError(xhr, 'An error occurred while deleting the work order.'),
+                                true
+                            );
+                        }
+                    });
+                }
+
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Delete Work Order?',
+                        text: 'Are you sure you want to delete ' + number + '?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete',
+                        confirmButtonColor: '#dc2626'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            deleteWorkOrder();
+                        }
+                    });
+                } else if (confirm(
+                    'Are you sure you want to delete Work Order ' + number + '?'
+                )) {
+                    deleteWorkOrder();
+                }
+            });
+
+            loadDropdowns();
+            loadWorkOrders();
+        });
+    </script>
+}

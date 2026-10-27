@@ -1,0 +1,888 @@
+﻿@{
+    ViewData["Title"] = "Contractor Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+
+<style>
+    .cm-page {
+        padding: 25px;
+        min-height: calc(100vh - 80px);
+        background: #f5f7fb;
+        color: #172033;
+        border-radius: 12px;
+    }
+
+    .cm-header, .cm-card-header, .cm-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .cm-header {
+        margin-bottom: 22px;
+    }
+
+    .cm-title {
+        margin: 0;
+        font-size: 25px;
+        font-weight: 750;
+    }
+
+    .cm-subtitle {
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .cm-card {
+        margin-bottom: 22px;
+        overflow: hidden;
+        border: 1px solid #e5eaf2;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .025);
+    }
+
+    .cm-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .cm-card-header h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+    .cm-card-body {
+        padding: 22px;
+    }
+
+    .cm-section-title {
+        margin: 6px 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #edf0f5;
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .cm-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .cm-required {
+        color: #dc2626;
+    }
+
+    .cm-input {
+        display: block;
+        width: 100%;
+        min-height: 41px;
+        padding: 9px 11px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #1e293b;
+        font-size: 13px;
+    }
+
+        .cm-input:focus {
+            border-color: #818cf8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+        }
+
+        .cm-input.is-invalid {
+            border-color: #dc3545;
+        }
+
+    .cm-error {
+        margin-top: 5px;
+        color: #dc2626;
+        font-size: 11px;
+    }
+
+    .cm-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 9px 14px;
+        border: 1px solid #dce3ed;
+        border-radius: 7px;
+        background: #fff;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .cm-btn-primary {
+        border-color: #4f46e5;
+        background: #4f46e5;
+        color: #fff;
+    }
+
+        .cm-btn-primary:hover {
+            border-color: #4338ca;
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .cm-btn:disabled {
+        opacity: .65;
+        cursor: not-allowed;
+    }
+
+    .cm-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #contractorTable {
+        width: 100% !important;
+        font-size: 12px;
+    }
+
+        #contractorTable thead th {
+            padding: 13px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        #contractorTable tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+    .cm-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .cm-status-active {
+        background: #effaf2;
+        color: #16803d;
+    }
+
+    .cm-status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .cm-icon-btn {
+        width: 32px;
+        height: 32px;
+        margin-right: 4px;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        background: #fff;
+    }
+
+    .cm-edit {
+        color: #4f46e5;
+    }
+
+    .cm-delete {
+        color: #dc2626;
+    }
+
+    .cm-count {
+        color: #4f46e5;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .cm-page .dataTables_wrapper {
+        padding: 16px 20px;
+    }
+
+    .cm-page .dataTables_filter input,
+    .cm-page .dataTables_length select {
+        padding: 7px;
+        border: 1px solid #dce3ed;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    @@media(max-width: 767px) {
+        .cm-page {
+            padding: 12px;
+        }
+
+        .cm-card-body {
+            padding: 15px;
+        }
+
+        .cm-card-header {
+            padding: 15px;
+        }
+
+        .cm-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="container-fluid cm-page">
+
+    @Html.AntiForgeryToken()
+
+    <div class="cm-header">
+        <div>
+            <div class="text-secondary small mb-2">
+                Administration / Master Data / Contractor Master
+            </div>
+            <h1 class="cm-title">
+                <i class="bi bi-people-fill text-primary me-2"></i>
+                Contractor Master
+            </h1>
+            <div class="cm-subtitle">
+                Register and manage contractor information.
+            </div>
+        </div>
+
+        <button type="button" id="addContractorBtn"
+                class="cm-btn cm-btn-primary">
+            <i class="bi bi-plus-lg"></i> Add Contractor
+        </button>
+    </div>
+
+    <!-- Contractor Form -->
+    <div class="cm-card" id="contractorFormCard" style="display:none;">
+        <div class="cm-card-header">
+            <div>
+                <h5 id="formTitle">Add Contractor</h5>
+                <div class="cm-subtitle" id="formSubtitle">
+                    Enter contractor details below.
+                </div>
+            </div>
+            <span id="formMode" class="cm-count">New Record</span>
+        </div>
+
+        <div class="cm-card-body">
+            <form id="contractorForm" autocomplete="off">
+                <input type="hidden" id="ContractorId" value="0" />
+
+                <div class="cm-section-title">
+                    <i class="bi bi-person-vcard me-2"></i>
+                    Basic Information
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="cm-label" for="ContractorCode">Contractor Code</label>
+                        <input id="ContractorCode" class="cm-input"
+                               maxlength="50" placeholder="Auto-generated / optional" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="ContractorName">
+                            Contractor Name <span class="cm-required">*</span>
+                        </label>
+                        <input id="ContractorName" class="cm-input"
+                               maxlength="200" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="ContactPerson">
+                            Contact Person <span class="cm-required">*</span>
+                        </label>
+                        <input id="ContactPerson" class="cm-input"
+                               maxlength="150" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="MobileNumber">
+                            Mobile Number <span class="cm-required">*</span>
+                        </label>
+                        <input id="MobileNumber" class="cm-input"
+                               type="tel" maxlength="15" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="Email">Email</label>
+                        <input id="Email" class="cm-input"
+                               type="email" maxlength="150" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="Status">
+                            Status <span class="cm-required">*</span>
+                        </label>
+                        <select id="Status" class="cm-input" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cm-section-title mt-4">
+                    <i class="bi bi-file-earmark-check me-2"></i>
+                    Tax and Licence Information
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="cm-label" for="GSTNumber">
+                            GST Number <span class="cm-required">*</span>
+                        </label>
+                        <input id="GSTNumber" class="cm-input"
+                               maxlength="20" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="PANNumber">
+                            PAN Number <span class="cm-required">*</span>
+                        </label>
+                        <input id="PANNumber" class="cm-input"
+                               maxlength="10" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="LicenceNumber">
+                            Licence Number <span class="cm-required">*</span>
+                        </label>
+                        <input id="LicenceNumber" class="cm-input"
+                               maxlength="50" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="LicenceValidFrom">
+                            Licence Valid From <span class="cm-required">*</span>
+                        </label>
+                        <input id="LicenceValidFrom" type="date"
+                               class="cm-input" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="LicenceValidTo">
+                            Licence Valid To <span class="cm-required">*</span>
+                        </label>
+                        <input id="LicenceValidTo" type="date"
+                               class="cm-input" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="LicenceCapacity">
+                            Licence Capacity <span class="cm-required">*</span>
+                        </label>
+                        <input id="LicenceCapacity" type="number" min="1"
+                               class="cm-input" required />
+                    </div>
+                </div>
+
+                <div class="cm-section-title mt-4">
+                    <i class="bi bi-shield-check me-2"></i>
+                    Statutory and Address Information
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="cm-label" for="DeployedCount">Deployed Count</label>
+                        <input id="DeployedCount" type="number" min="0"
+                               class="cm-input" value="0" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="PFEstablishmentCode">
+                            PF Establishment Code <span class="cm-required">*</span>
+                        </label>
+                        <input id="PFEstablishmentCode" class="cm-input"
+                               maxlength="50" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="cm-label" for="ESICEmployerCode">
+                            ESIC Employer Code <span class="cm-required">*</span>
+                        </label>
+                        <input id="ESICEmployerCode" class="cm-input"
+                               maxlength="50" required />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="cm-label" for="Address">
+                            Address <span class="cm-required">*</span>
+                        </label>
+                        <textarea id="Address" class="cm-input"
+                                  maxlength="500" rows="3" required></textarea>
+                    </div>
+                </div>
+
+                <div id="formError" class="cm-error mb-2"></div>
+
+                <div class="cm-actions mt-4">
+                    <button type="button" id="cancelBtn" class="cm-btn">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                    <button type="submit" id="saveBtn"
+                            class="cm-btn cm-btn-primary">
+                        <i class="bi bi-check2-circle"></i> Save Contractor
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contractor List -->
+    <div class="cm-card">
+        <div class="cm-card-header">
+            <div>
+                <h5><i class="bi bi-list-ul text-primary me-2"></i>Registered Contractors</h5>
+                <div class="cm-subtitle">View and manage registered contractors.</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <span id="listCount" class="cm-count">0 Records</span>
+                <button type="button" id="refreshBtn" class="cm-btn">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div id="tableMessage" class="px-3 pt-3 text-secondary small"></div>
+
+        <div class="cm-table-wrap">
+            <table id="contractorTable" class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Contractor Code</th>
+                        <th>Contractor Name</th>
+                        <th>Contact Person</th>
+                        <th>Mobile</th>
+                        <th>Licence Number</th>
+                        <th>Licence Valid To</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="contractorTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(function () {
+            let contractors = [];
+            let dataTable = null;
+
+            function token() {
+                return $('input[name="__RequestVerificationToken"]').val();
+            }
+
+            function safe(value) {
+                return $('<div>').text(value == null ? '' : String(value)).html();
+            }
+
+            function showMessage(message, isError = false) {
+                if (window.Swal) {
+                    return Swal.fire({
+                        icon: isError ? 'error' : 'success',
+                        title: isError ? 'Error' : 'Success',
+                        text: message
+                    });
+                }
+
+                alert(message);
+                return Promise.resolve();
+            }
+
+            function apiError(xhr, fallback) {
+                return xhr.responseJSON?.message || fallback;
+            }
+
+            function formatDate(value) {
+                if (!value) return '';
+
+                const date = new Date(value);
+                if (isNaN(date.getTime())) return '';
+
+                return date.toLocaleDateString('en-GB');
+            }
+
+            function resetForm() {
+                $('#contractorForm')[0].reset();
+                $('#ContractorId').val(0);
+                $('#DeployedCount').val(0);
+                $('#Status').val('Active');
+                $('#formError').text('');
+
+                $('#formTitle').text('Add Contractor');
+                $('#formSubtitle').text('Enter contractor details below.');
+                $('#formMode').text('New Record');
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Save Contractor'
+                );
+
+                $('#contractorForm .cm-input').removeClass('is-invalid');
+            }
+
+            function openForm() {
+                $('#contractorFormCard').stop(true, true).slideDown(200);
+                $('html, body').animate({
+                    scrollTop: $('#contractorFormCard').offset().top - 70
+                }, 200);
+            }
+
+            function closeForm() {
+                $('#contractorFormCard').stop(true, true).slideUp(200);
+                resetForm();
+            }
+
+            function renderTable(data) {
+                if ($.fn.DataTable.isDataTable('#contractorTable')) {
+                    $('#contractorTable').DataTable().destroy();
+                }
+
+                let rows = '';
+
+                data.forEach(function (item, index) {
+                    const status = String(item.status || '');
+                    const statusClass = status.toLowerCase() === 'active'
+                        ? 'cm-status-active'
+                        : 'cm-status-inactive';
+
+                    rows += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${safe(item.contractorCode || '-')}</td>
+                            <td>${safe(item.contractorName)}</td>
+                            <td>${safe(item.contactPerson)}</td>
+                            <td>${safe(item.mobileNumber)}</td>
+                            <td>${safe(item.licenceNumber)}</td>
+                            <td>${safe(formatDate(item.licenceValidTo))}</td>
+                            <td>${safe(item.licenceCapacity)}</td>
+                            <td>
+                                <span class="cm-status ${statusClass}">
+                                    ${safe(status)}
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="cm-icon-btn cm-edit editBtn"
+                                        data-id="${safe(item.contractorId)}"
+                                        title="Edit contractor">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button"
+                                        class="cm-icon-btn cm-delete deleteBtn"
+                                        data-id="${safe(item.contractorId)}"
+                                        title="Delete contractor">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+                });
+
+                $('#contractorTableBody').html(rows);
+                $('#listCount').text(
+                    data.length + (data.length === 1 ? ' Record' : ' Records')
+                );
+
+                dataTable = $('#contractorTable').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [5, 10, 25, 50],
+                    ordering: true,
+                    searching: true,
+                    autoWidth: false,
+                    order: [],
+                    columnDefs: [
+                        { targets: [0, 9], orderable: false }
+                    ],
+                    language: {
+                        emptyTable: 'No contractor records available',
+                        zeroRecords: 'No matching contractors found',
+                        search: '',
+                        searchPlaceholder: 'Search contractors...',
+                        lengthMenu: 'Show _MENU_ entries'
+                    }
+                });
+
+                dataTable.on('draw.dt', function () {
+                    const info = dataTable.page.info();
+                    dataTable.column(0, { page: 'current' })
+                        .nodes().each(function (cell, index) {
+                            cell.textContent = info.start + index + 1;
+                        });
+                });
+            }
+
+            function loadContractors() {
+                $('#refreshBtn').prop('disabled', true);
+                $('#tableMessage').text('Loading contractors...');
+
+                $.ajax({
+                    url: '/ContractorMaster/GetAll',
+                    type: 'GET',
+                    cache: false,
+
+                    success: function (response) {
+                        if (!response || response.status !== true) {
+                            contractors = [];
+                            renderTable([]);
+                            $('#tableMessage').text(
+                                response?.message || 'Unable to load contractors.'
+                            );
+                            return;
+                        }
+
+                        contractors = response.data || [];
+                        renderTable(contractors);
+                        $('#tableMessage').text('');
+                    },
+
+                    error: function (xhr) {
+                        contractors = [];
+                        renderTable([]);
+                        $('#tableMessage').text(
+                            apiError(xhr, 'Unable to load contractors.')
+                        );
+                    },
+
+                    complete: function () {
+                        $('#refreshBtn').prop('disabled', false);
+                    }
+                });
+            }
+
+            function fillForm(item) {
+                $('#ContractorId').val(item.contractorId);
+                $('#ContractorCode').val(item.contractorCode || '');
+                $('#ContractorName').val(item.contractorName || '');
+                $('#ContactPerson').val(item.contactPerson || '');
+                $('#MobileNumber').val(item.mobileNumber || '');
+                $('#Email').val(item.email || '');
+                $('#GSTNumber').val(item.gstNumber || '');
+                $('#PANNumber').val(item.panNumber || '');
+                $('#LicenceNumber').val(item.licenceNumber || '');
+                $('#LicenceValidFrom').val(
+                    item.licenceValidFrom
+                        ? String(item.licenceValidFrom).substring(0, 10)
+                        : ''
+                );
+                $('#LicenceValidTo').val(
+                    item.licenceValidTo
+                        ? String(item.licenceValidTo).substring(0, 10)
+                        : ''
+                );
+                $('#LicenceCapacity').val(item.licenceCapacity);
+                $('#DeployedCount').val(item.deployedCount ?? 0);
+                $('#PFEstablishmentCode').val(item.pfEstablishmentCode || '');
+                $('#ESICEmployerCode').val(item.esicEmployerCode || '');
+                $('#Address').val(item.address || '');
+                $('#Status').val(item.status || 'Active');
+
+                $('#formTitle').text('Edit Contractor');
+                $('#formSubtitle').text('Update the selected contractor.');
+                $('#formMode').text('Edit Record');
+                $('#saveBtn').html(
+                    '<i class="bi bi-check2-circle"></i> Update Contractor'
+                );
+
+                $('#formError').text('');
+                openForm();
+            }
+
+            function getDto() {
+                return {
+                    contractorId: Number($('#ContractorId').val()) || 0,
+                    contractorCode: $('#ContractorCode').val().trim() || null,
+                    contractorName: $('#ContractorName').val().trim(),
+                    contactPerson: $('#ContactPerson').val().trim(),
+                    mobileNumber: $('#MobileNumber').val().trim(),
+                    email: $('#Email').val().trim() || null,
+                    gstNumber: $('#GSTNumber').val().trim().toUpperCase(),
+                    panNumber: $('#PANNumber').val().trim().toUpperCase(),
+                    licenceNumber: $('#LicenceNumber').val().trim(),
+                    licenceValidFrom: $('#LicenceValidFrom').val() || null,
+                    licenceValidTo: $('#LicenceValidTo').val() || null,
+                    licenceCapacity: Number($('#LicenceCapacity').val()),
+                    deployedCount: Number($('#DeployedCount').val() || 0),
+                    pfEstablishmentCode: $('#PFEstablishmentCode').val().trim(),
+                    esicEmployerCode: $('#ESICEmployerCode').val().trim(),
+                    address: $('#Address').val().trim(),
+                    status: $('#Status').val(),
+                    isActive: true
+                };
+            }
+
+            $('#addContractorBtn').on('click', function () {
+                resetForm();
+                openForm();
+                $('#ContractorName').trigger('focus');
+            });
+
+            $('#cancelBtn').on('click', closeForm);
+            $('#refreshBtn').on('click', loadContractors);
+
+            $('#contractorForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const form = this;
+                if (!form.reportValidity()) return;
+
+                const dto = getDto();
+
+                if (dto.licenceValidTo < dto.licenceValidFrom) {
+                    $('#formError').text(
+                        'Licence valid-to date cannot be earlier than valid-from date.'
+                    );
+                    return;
+                }
+
+                if (dto.deployedCount < 0) {
+                    $('#formError').text('Deployed count cannot be negative.');
+                    return;
+                }
+
+                if (dto.deployedCount > dto.licenceCapacity) {
+                    $('#formError').text(
+                        'Deployed count cannot exceed licence capacity.'
+                    );
+                    return;
+                }
+
+                const isEdit = dto.contractorId > 0;
+                const url = isEdit
+                    ? '/ContractorMaster/Update'
+                    : '/ContractorMaster/Create';
+
+                $('#formError').text('');
+                $('#saveBtn').prop('disabled', true);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(dto),
+                    headers: {
+                        'RequestVerificationToken': token()
+                    },
+
+                    success: function (response) {
+                        if (response && response.status === true) {
+                            showMessage(response.message).then(function () {
+                                closeForm();
+                                loadContractors();
+                            });
+                        } else {
+                            $('#formError').text(
+                                response?.message || 'Unable to save contractor.'
+                            );
+                        }
+                    },
+
+                    error: function (xhr) {
+                        $('#formError').text(
+                            apiError(xhr, 'An error occurred while saving contractor.')
+                        );
+                    },
+
+                    complete: function () {
+                        $('#saveBtn').prop('disabled', false);
+                    }
+                });
+            });
+
+            $('#contractorTable').on('click', '.editBtn', function () {
+                const id = Number($(this).attr('data-id'));
+                const item = contractors.find(
+                    x => Number(x.contractorId) === id
+                );
+
+                if (!item) {
+                    showMessage('Contractor record not found.', true);
+                    return;
+                }
+
+                resetForm();
+                fillForm(item);
+            });
+
+            $('#contractorTable').on('click', '.deleteBtn', function () {
+                const id = Number($(this).attr('data-id'));
+                const item = contractors.find(
+                    x => Number(x.contractorId) === id
+                );
+
+                if (!item) {
+                    showMessage('Contractor record not found.', true);
+                    return;
+                }
+
+                function deleteContractor() {
+                    $.ajax({
+                        url: '/ContractorMaster/Delete?id=' + encodeURIComponent(id),
+                        type: 'POST',
+                        headers: {
+                            'RequestVerificationToken': token()
+                        },
+
+                        success: function (response) {
+                            if (response && response.status === true) {
+                                showMessage(response.message).then(loadContractors);
+                            } else {
+                                showMessage(
+                                    response?.message || 'Unable to delete contractor.',
+                                    true
+                                );
+                            }
+                        },
+
+                        error: function (xhr) {
+                            showMessage(
+                                apiError(xhr, 'An error occurred while deleting contractor.'),
+                                true
+                            );
+                        }
+                    });
+                }
+
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Delete Contractor?',
+                        text: 'Are you sure you want to delete ' +
+                            item.contractorName + '?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete',
+                        confirmButtonColor: '#dc3545'
+                    }).then(function (result) {
+                        if (result.isConfirmed) deleteContractor();
+                    });
+                } else if (confirm(
+                    'Are you sure you want to delete ' +
+                    item.contractorName + '?'
+                )) {
+                    deleteContractor();
+                }
+            });
+
+            loadContractors();
+        });
+    </script>
+}
